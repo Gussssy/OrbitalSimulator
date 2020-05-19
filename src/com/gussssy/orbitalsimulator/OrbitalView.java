@@ -53,14 +53,7 @@ public class OrbitalView{
 		System.out.println("Initializing Frame with Width: "+frameWidth+", Height: "+frameHeight);
 		frame = new JFrame("Orbital Simulator");
 		frame.setSize(frameWidth,frameHeight); //This works because the frame is the highest level component
-		
-		//URL iconURL = this.getClass().getClassLoader().getResource("/icon.png");
-		
-		//System.out.println("Icon URL: "+ iconURL);
-		//ImageIcon imageIcon = new ImageIcon(getClass().getResource("/icon.png"));
 		frame.setIconImage(new ImageIcon(getClass().getResource("/icon.png")).getImage());
-		//frame.setIconImage(imageIcon.getImage());
-		//System.out.println("ImageIcon: "+ imageIcon.toString());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//frame.setBackground(Color.black); //This does nothijng
 		
