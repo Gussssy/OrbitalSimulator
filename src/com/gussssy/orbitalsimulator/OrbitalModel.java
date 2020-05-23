@@ -77,12 +77,6 @@ public class OrbitalModel{
 		//objects.add(mars2);
 		//objects.add(intruder);
 
-		//Testing saving and loading of objects to/from file
-		OrbitalScene os = new OrbitalScene(objects);
-		os.save();
-		os.open();
-		objects = os.objectsLoad;
-
 
 	}
 
