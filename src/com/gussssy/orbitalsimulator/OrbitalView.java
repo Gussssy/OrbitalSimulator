@@ -90,5 +90,10 @@ public class OrbitalView{
 		frame.pack();
 
 	}
+	
+	public void reset(){
+		
+		planetBuilderPanel.reset();
+	}
 
 }

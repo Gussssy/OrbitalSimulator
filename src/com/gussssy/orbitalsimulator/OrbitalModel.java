@@ -52,7 +52,7 @@ public class OrbitalModel{
 
 		//Solar Syatem objects
 		Ob sun = new Ob("The Sun",330000, CENTRE,CENTRE, 0,0, new Color(255,255,0),75);
-		Ob earthQ1_2 = new Ob("Earth Q1-2",1,CENTRE,CENTRE-D_EARTH_SUN, 29.78,0,  new Color(0,100,255),25);
+		Ob earthQ1_2 = new Ob("Earth",1,CENTRE,CENTRE-D_EARTH_SUN, 29.78,0,  new Color(0,100,255),25);
 		Ob mars = new Ob("Mars", 0.107, CENTRE, CENTRE-D_MARS_SUN, 24, 0, new Color(200, 50, 50),13);
 		Ob jupiter = new Ob("Jupiter", 318, CENTRE, CENTRE-D_JUPITER_SUN, 13.07,0, new Color(153,102,0),80);
 		Ob venus = new Ob("Venus", 0.815, CENTRE, CENTRE-D_VENUS_SUN, 35.02,0, new Color(255,255,204),24);
@@ -74,8 +74,8 @@ public class OrbitalModel{
 		objects.add(jupiter);
 		objects.add(venus);
 		objects.add(mercury);
-		objects.add(mars2);
-		objects.add(intruder);
+		//objects.add(mars2);
+		//objects.add(intruder);
 
 		//Testing saving and loading of objects to/from file
 		OrbitalScene os = new OrbitalScene(objects);

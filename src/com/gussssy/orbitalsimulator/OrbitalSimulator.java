@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 *	- reset the simulation
 *	- speed up / slow down the simulation
 */
-public class OrbitalSimulator{
+public class OrbitalSimulator implements Runnable{
 
 	/**
 	* MVC: View. Contains all the View elements
@@ -28,6 +28,42 @@ public class OrbitalSimulator{
 	/**
 	* Currently does nothing but keep the run loop executing. Setting to false causes bad things.
 	*/
+	boolean running = false;
+	
+	/**
+	 * Controls when the simulation is to render a frame 
+	 */
+	boolean render = false;
+	
+	/**
+	 *  Caps update rate at 60 updates persecond 
+	 */
+	final double UPDATE_CAP = 1.0/60.0; 
+	
+	/**
+	 *  When true will uncap frame rate and print out average fps to the console.
+	 *  The simulation will still update 60 times per second but a frame will be rendered for every iteration of the run loop.
+	 */
+	boolean efficiencyTestMode = true;
+	
+	/**
+	 * When true, fps will be printed to the console every second
+	 */
+	boolean printFPS = true;
+	
+	/**
+	 * The thread that will execute the run loop 
+	 */
+	private Thread thread;
+	
+	/**
+	 * The single instance of OrbitalSimulator 
+	 **/
+	public OrbitalSimulator simulator;
+	
+	
+	//only here to allow compliation with old code that will not be used but is there for reference for now
+	@Deprecated
 	static boolean run = true;
 	
 	/**
@@ -38,16 +74,19 @@ public class OrbitalSimulator{
 	/**
 	Time delay after each execution of the run loop. Minimum value is 1ms. There is no maximum value.
 	*/
+	@Deprecated
 	static int timeDelay = 100;
 	
 	/**
 	The time delay uised by the ruin loop when the simulation is paused
 	*/
+	@Deprecated
 	static final int PAUSE_TIME_DELAY = 100;
 	
 	/**
 	* Holds the value of time delay when the simulation is paused. When the simulation is unpaused, this value is set to the time delay
 	*/
+	@Deprecated
 	static int playTimeDelay = 100;
 
 	
@@ -61,24 +100,160 @@ public class OrbitalSimulator{
 	public static void main(String[] args){
 
 		System.out.println("Starting Orbital Simulator v2.0");
-
+		
+		OrbitalSimulator simulator = new OrbitalSimulator();
+	}
+	
+	
+	/**
+	 * OrbitalSimulator Constructor
+	 * - initializes the model and view
+	 * - initializes the thread
+	 * - starts the run loop
+	 */
+	public OrbitalSimulator(){
+				
+		simulator = this;
+		
 		//initialize the objects
 		model = new OrbitalModel();
 
 		//initialize the frame, display panel and control panel\
 		view = new OrbitalView();
 
+		//initialize the thread that will execute the run loop
+		thread = new Thread(simulator); 
+		
 		//begin the simulation
-		run();
+		thread.run();
+		System.out.println("After thread start");
 	}
 
-	
+	/**
+	 * Uses a basic game loop to run the simulation. 
+	 *  - the simulation only updates after a certain amount of time (UPDATE_CAP) has passed. 
+	 * 
+	 * This was adapted from youtuber Majoolwip, specifically this video: https://www.youtube.com/watch?v=4iPEjFUZNsw&t=6s
+	 * 
+	 **/
+	@Override
+	public void run(){
+
+		running = true;
+
+		// time past tracking variables
+		double firstTime = 0;
+		double lastTime = System.nanoTime() / 1000000000.0;
+		double passedTime = 0;
+		double unprocessedTime = 0;
+
+		//fps tracking variables
+		double frameTime = 0;
+		int frames = 0;
+		int fps = 0;
+		int updates = 0;
+		int accumulatedFrames = 0;
+		int numSeconds = 0;
+		
+
+		while(running){
+				
+
+			//Update timing variables for this iteration
+			firstTime = System.nanoTime() / 1000000000.0; 	//get the current time 
+			passedTime = firstTime - lastTime;				//determine time passed since last iteration
+			lastTime = firstTime; 							//set lastTime for the next iteration
+			unprocessedTime += passedTime;					//accumulate unprocessedTime
+			frameTime += passedTime;						//accumulate time since last fps count
+
+			
+			// UPDATE BLOCK
+			// simulation waits for enough time to pass before updating
+			while(unprocessedTime >= UPDATE_CAP){										
+
+				//SIMULATION IS READY TO UPDATE 
+				
+				
+				unprocessedTime -= UPDATE_CAP;	//if the thread freezes, and we miss multiple updates, as we don't reset unprocessed time to 0, it will update again until condition is not met
+				
+				// Set render to true so a frame is rendered on this iteration of the run loop
+				render = true;
+
+				//UPDATE: Simulate a day (as long as simulation is not paused)
+				if(!paused)model.simulateDay();
+			}
+			
+			
+			// FPS TRACKING BLOCK
+			// count FPS after 1 second
+			if(frameTime >= 1.0){
+
+				//Determines max possible frame rendering for efficiency testing purposes
+				if(efficiencyTestMode){
+					accumulatedFrames += frames;
+					numSeconds++;
+					System.out.println("Average Max FPS: " + getAverageMaxFrames(accumulatedFrames, numSeconds));
+				}
+				
+				//reset frame counting variables
+				frameTime = 0;
+				fps = frames;
+				frames = 0;
+				
+				if(printFPS)System.out.println("fps: "+fps);
+			}
+
+			
+			
+			// RENDER BLOCK
+			// If render is true, the simulation has been updated, these updates need to be displayed
+			if(render){
+				
+				//RENDER A FRAME
+				
+				//Update the display
+				view.display.repaint();
+				frames++;
+				
+				// set render to false so rendering occurs once after each update
+				//		if in efficiency test mode...
+				if(!efficiencyTestMode)render = false;	
+				
+
+			}else{
+				
+				// NOT RENDERING ON THIS ITERATION
+				
+				// frame was not rendered on this iteration of the run loop. Thread will sleep for 1 millisecond
+				//System.out.println("I didnt render");
+				
+				try{
+					Thread.sleep(1);
+				} catch (InterruptedException e){e.printStackTrace();}
+			}	
+		}
+	}
+
+		
+	/**
+	 *  Calculates the average fps since the program started running. 
+	 * 
+	 * @param framesTotal: total number of frames since the program was started
+	 * @param seconds: time the program has been running
+	 * @return the average frames per second since the program started 
+	 */
+	private double getAverageMaxFrames(int framesTotal, int seconds){
+		
+		double averageMaxFrames = (double)framesTotal / (double)seconds;
+		return averageMaxFrames;
+	}
 
 	/**
 	* Infinite loop that runs the simulation as long as it is not paused. 
 	* Still executes when paused but the simulation halts. 
 	*/
-	private static void run(){
+	@Deprecated
+	private static void runOld(){
 		while(run){
 
 			if(!paused){
@@ -103,6 +278,8 @@ public class OrbitalSimulator{
 			}
 		}
 	}
+	
+	
 
 	
 
@@ -112,6 +289,7 @@ public class OrbitalSimulator{
 	* 
 	* Does nothing if the simulation is paused. 
 	*/
+	@Deprecated 
 	public static void increaseTimeDelay(){
 
 		//If the simulation is paused, do nothing
@@ -133,6 +311,7 @@ public class OrbitalSimulator{
 	* Does nothing if the simulation is paused or the time delay is at is minimum value of 0ms.
 	* If the time delay is below 10ms, will only decrease the time delay by 1ms. 
 	*/
+	@Deprecated
 	public static void decreaseTimeDelay(){
 
 		//If the simulation is paused, do nothing
@@ -186,7 +365,10 @@ public class OrbitalSimulator{
 	public static void reset(){
 		
 		model.reset();
-		
-		view.planetBuilderPanel.reset();
+		view.reset();
 	}
+
+
+
+	
 }
