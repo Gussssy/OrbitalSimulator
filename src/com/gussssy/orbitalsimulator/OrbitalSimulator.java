@@ -1,6 +1,5 @@
 package com.gussssy.orbitalsimulator;
 
-import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 /**

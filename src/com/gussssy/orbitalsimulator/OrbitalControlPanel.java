@@ -125,6 +125,7 @@ public class OrbitalControlPanel extends JPanel{
 	private void upPressed(){
 		System.out.println("Up Pressed");
 		simulator.view.display.panUp();
+		simulator.view.planetBuilderPanel.deselectFocusBox();
 
 	}
 
@@ -133,6 +134,7 @@ public class OrbitalControlPanel extends JPanel{
 	private void downPressed(){
 		System.out.println("Down Pressed");
 		simulator.view.display.panDown();
+		simulator.view.planetBuilderPanel.deselectFocusBox();
 
 	}
 
@@ -141,6 +143,7 @@ public class OrbitalControlPanel extends JPanel{
 	private void leftPressed(){
 		System.out.println("Left Pressed");
 		simulator.view.display.panLeft();
+		simulator.view.planetBuilderPanel.deselectFocusBox();
 
 	}
 
@@ -149,6 +152,7 @@ public class OrbitalControlPanel extends JPanel{
 	private void rightPressed(){
 		System.out.println("Right Pressed");
 		simulator.view.display.panRight();
+		simulator.view.planetBuilderPanel.deselectFocusBox();
 
 	}
 

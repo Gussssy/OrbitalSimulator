@@ -260,7 +260,10 @@ public class OrbitalDisplay extends JPanel{
 		width = size.width;
 		height = size.height;
 		centreDisplayAroundObject(simulator.model.getObjects().get(0));
+		
 	}
+	
+	public void reset(){}
 
 	private class DisplayListener implements ComponentListener{
 

@@ -33,7 +33,7 @@ public class PlanetBuilderPanel extends JPanel{
 	private DoubleJSpinner massSpinner;
 
 	/**A checkbox that will centre this display around the selected object if checked*/
-	private JCheckBox centerDisplayCheckBox;
+	private JCheckBox focusBox;
 	
 
 	/**
@@ -92,11 +92,11 @@ public class PlanetBuilderPanel extends JPanel{
 
 		JPanel focusPanel = new JPanel();
 		focusPanel.setLayout(new BorderLayout());
-		centerDisplayCheckBox = new JCheckBox("Focus on this object ");
-		centerDisplayCheckBox.addItemListener(e -> centreDisplayCheckBoxChanged(e));
+		focusBox = new JCheckBox("Focus on this object ");
+		focusBox.addItemListener(e -> focusBoxChanged(e));
 		JLabel spacer = new JLabel(" ");
 		focusPanel.add(spacer, BorderLayout.CENTER);
-		focusPanel.add(centerDisplayCheckBox, BorderLayout.SOUTH);
+		focusPanel.add(focusBox, BorderLayout.SOUTH);
 		add(focusPanel);
 	}
 
@@ -109,6 +109,7 @@ public class PlanetBuilderPanel extends JPanel{
 	public void reset(){
 		
 		objects = simulator.model.getObjects();
+		focusBox.setSelected(false);
 		resetCombobox();
 		resetSpinners();
 	}
@@ -152,6 +153,7 @@ public class PlanetBuilderPanel extends JPanel{
 		
 		cell.setObject(getSelectedObjectFromComboBox());
 		resetSpinners();
+		focusBox.setSelected(false);
 		repaint();
 	}
 
@@ -190,9 +192,9 @@ public class PlanetBuilderPanel extends JPanel{
 	
 	
 	/**
-	* Takes appropriate action when the.....
+	* Takes appropriate action when the focus Box state changes
 	*/
-	private void centreDisplayCheckBoxChanged(ItemEvent e){
+	private void focusBoxChanged(ItemEvent e){
 		//System.out.println(e.paramString());
 		int state = e.getStateChange();
 		// state = 1 Slected, state = 2 Deselected 
@@ -202,6 +204,12 @@ public class PlanetBuilderPanel extends JPanel{
 		}else{
 			simulator.view.display.dontCenterDisplay();
 		}
+	}
+	
+	public void deselectFocusBox(){
+		
+		focusBox.setSelected(false);
+		
 	}
 
 	
