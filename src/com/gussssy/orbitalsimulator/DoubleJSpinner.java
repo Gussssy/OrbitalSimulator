@@ -1,20 +1,21 @@
 package com.gussssy.orbitalsimulator;
 
+import java.awt.Dimension;
+
+import javax.swing.JComponent;
 import javax.swing.JSpinner;
-import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 
 /**
 * A JSpinner that uses doubles rather then int.
+*  - also formats input.
 * 
-* Also formats input.
+*  Adapted from: http://www.java2s.com/Tutorials/Java/Swing_How_to/JSpinner/Set_step_for_JSpinner_in_Double_format.htm
 */
 public class DoubleJSpinner extends JSpinner{
-
 	
-
 	/**
-	* Constructor. 
+	* The sole constructor for DoubleJSpinner. 
 	*
 	* @param initValue the initial value the Jspinner will display
 	* @param minValue the minimum value the JSPinner will accept
@@ -26,6 +27,13 @@ public class DoubleJSpinner extends JSpinner{
 		super(new SpinnerNumberModel(initValue, minValue, maxValue, stepValue));
 		JSpinner.NumberEditor editor = new JSpinner.NumberEditor(this);
 		setEditor(editor);
-
+	}
+	
+	public void setWidth(int width){
+		
+		JComponent field = ((JSpinner.DefaultEditor) this.getEditor());
+		Dimension size = field.getPreferredSize();
+		size = new Dimension(width, size.height);
+		field.setPreferredSize(size);
 	}
 }

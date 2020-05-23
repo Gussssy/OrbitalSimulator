@@ -19,7 +19,7 @@ public class Ob implements Serializable{
 	double gForce;
 	
 	
-	//Model coords
+	// MODEL COORDS
 	/**The x value of the objects loaction within the model space*/
 	double x;
 	/**The y value of the objects loaction within the model space*/		
@@ -48,6 +48,15 @@ public class Ob implements Serializable{
 
 	/**
 	* Main constructor. Specefies all necessary values to make a functional object. 
+	* 
+	* @param name: the name of the object
+	* @param mass: the mass of the object (in earth masses)
+	* @param x: the initial x location in the model NOT the display
+	* @param y: the initial y location in the model NOT the display
+	* @param vx: the initial x velocity
+	* @param vy: the initial y velocity
+	* @param color: the color of the object in the display
+	* @param size: the size of the object in the display in pixels
 	*/
 	public Ob(String name,double mass, double x, double y, double vx, double vy, Color color, int size){
 		this.name = name;
@@ -65,6 +74,11 @@ public class Ob implements Serializable{
 
 	/**
 	* Simplified constructor that sets necesary unspecified variables to default values
+	* 
+	* @param name: the name of the object
+	* @param mass: the mass of the object (in earth masses)
+	* @param x: the initial x location in the model NOT the display
+	* @param y: the initial y location in the model NOT the display
 	*/
 	public Ob(String name, double mass, double x, double y){
 		this.name = name;
@@ -72,7 +86,8 @@ public class Ob implements Serializable{
 		this.x = x;
 		this.y = y;
 
-		//variables not specified by simplified constructor
+		
+		//variables not specified by this simplified constructor
 		
 		//velocity values, default set to 0
 		vx = 0;

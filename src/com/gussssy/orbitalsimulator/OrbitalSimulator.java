@@ -1,5 +1,6 @@
 package com.gussssy.orbitalsimulator;
 
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -16,14 +17,19 @@ import java.util.concurrent.TimeUnit;
 public class OrbitalSimulator implements Runnable{
 
 	/**
+	 * MVC: Controller.
+	 **/
+	public OrbitalSimulator simulator;
+	
+	/**
 	* MVC: View. Contains all the View elements
 	*/
-	static OrbitalView view;
+	public OrbitalView view;
 	
 	/**
 	* MVC Model. Holds the data for the simulation and performs the calculations etc
 	*/
-	static OrbitalModel model;
+	public OrbitalModel model;
 
 	/**
 	* Currently does nothing but keep the run loop executing. Setting to false causes bad things.
@@ -44,7 +50,7 @@ public class OrbitalSimulator implements Runnable{
 	 *  When true will uncap frame rate and print out average fps to the console.
 	 *  The simulation will still update 60 times per second but a frame will be rendered for every iteration of the run loop.
 	 */
-	boolean efficiencyTestMode = true;
+	boolean efficiencyTestMode = false;
 	
 	/**
 	 * When true, fps will be printed to the console every second
@@ -55,12 +61,6 @@ public class OrbitalSimulator implements Runnable{
 	 * The thread that will execute the run loop 
 	 */
 	private Thread thread;
-	
-	/**
-	 * The single instance of OrbitalSimulator 
-	 **/
-	public OrbitalSimulator simulator;
-	
 	
 	//only here to allow compliation with old code that will not be used but is there for reference for now
 	@Deprecated
@@ -88,6 +88,12 @@ public class OrbitalSimulator implements Runnable{
 	*/
 	@Deprecated
 	static int playTimeDelay = 100;
+	
+	
+	double[] updateCaps = {1.0/15.0, 1.0/30.0, 1.0/60.0, 1.0/120.0, 1.0/240.0};
+	int updateCapIndex = 2;
+	double updateCap = 1.0/60.0;
+	double frameCap = 1.0/60.0;
 
 	
 
@@ -119,7 +125,7 @@ public class OrbitalSimulator implements Runnable{
 		model = new OrbitalModel();
 
 		//initialize the frame, display panel and control panel\
-		view = new OrbitalView();
+		view = new OrbitalView(simulator);
 
 		//initialize the thread that will execute the run loop
 		thread = new Thread(simulator); 
@@ -169,12 +175,12 @@ public class OrbitalSimulator implements Runnable{
 			
 			// UPDATE BLOCK
 			// simulation waits for enough time to pass before updating
-			while(unprocessedTime >= UPDATE_CAP){										
+			while(unprocessedTime >= updateCap){										
 
 				//SIMULATION IS READY TO UPDATE 
 				
 				
-				unprocessedTime -= UPDATE_CAP;	//if the thread freezes, and we miss multiple updates, as we don't reset unprocessed time to 0, it will update again until condition is not met
+				unprocessedTime -= updateCap;	//if the thread freezes, and we miss multiple updates, as we don't reset unprocessed time to 0, it will update again until condition is not met
 				
 				// Set render to true so a frame is rendered on this iteration of the run loop
 				render = true;
@@ -225,6 +231,7 @@ public class OrbitalSimulator implements Runnable{
 				// NOT RENDERING ON THIS ITERATION
 				
 				// frame was not rendered on this iteration of the run loop. Thread will sleep for 1 millisecond
+				
 				//System.out.println("I didnt render");
 				
 				try{
@@ -234,7 +241,31 @@ public class OrbitalSimulator implements Runnable{
 		}
 	}
 
+	public void increaseUpdateCap(){
 		
+		
+		if(updateCapIndex > 0){
+			updateCapIndex--;
+		}
+		
+		updateCap = updateCaps[updateCapIndex];
+		System.out.println("New Update Cap: "+ updateCap);
+	}
+	
+	public void decreaseUpdateCap(){
+		
+		if(updateCapIndex < updateCaps.length-1){
+			updateCapIndex++;
+		}
+		
+		System.out.println("Did the simulation speed up?");
+		
+		
+		updateCap = updateCaps[updateCapIndex];
+		System.out.println("New Update Cap: "+ updateCap);
+	}
+	
+	
 	/**
 	 *  Calculates the average fps since the program started running. 
 	 * 
@@ -253,7 +284,7 @@ public class OrbitalSimulator implements Runnable{
 	* Still executes when paused but the simulation halts. 
 	*/
 	@Deprecated
-	private static void runOld(){
+	private  void runOld(){
 		while(run){
 
 			if(!paused){
@@ -362,13 +393,13 @@ public class OrbitalSimulator implements Runnable{
 	* 
 	* Calls reset on any other components that needs restting also. 
 	*/
-	public static void reset(){
+	public void reset(){
+		
+		updateCap = UPDATE_CAP;
 		
 		model.reset();
 		view.reset();
 	}
-
-
-
+	
 	
 }

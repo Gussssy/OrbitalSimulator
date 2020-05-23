@@ -18,6 +18,8 @@ public class PlanetBuilderPanel extends JPanel{
 	/**The objects*/
 	private ArrayList<Ob> objects;
 	
+	private OrbitalSimulator simulator;
+	
 	/**A JCombobox that wil contain the name each object*/
 	private JComboBox planetSelect;
 
@@ -40,10 +42,11 @@ public class PlanetBuilderPanel extends JPanel{
 	* Initilizes the GUI elements, registers listeners and sets initial values of components.
 	* @param objects and Array List of Ob. 
 	*/
-	public PlanetBuilderPanel(ArrayList<Ob> objects){
+	public PlanetBuilderPanel(OrbitalSimulator simulator, ArrayList<Ob> objects){
 		
 
 		this.objects = objects;
+		this.simulator = simulator;
 		
 		//Generate array of strings containing the name of each object in the collection for the combobox.
 		String[] items = new String[objects.size()];
@@ -64,21 +67,37 @@ public class PlanetBuilderPanel extends JPanel{
 		add(cell);
 
 		//Initialize the Size Spinner, set initial value, add listener 
+		JPanel sizePanel = new JPanel();
+		sizePanel.setLayout(new BorderLayout());
+		JLabel sizeLabel = new JLabel("Size:");
 		sizeSpinner = new JSpinner();
 		sizeSpinner.setValue((int)getSelectedObjectFromComboBox().size);
 		sizeSpinner.addChangeListener(e -> sizeSpinnerChanged());
-		add(sizeSpinner);
+		sizePanel.add(sizeLabel, BorderLayout.CENTER);
+		sizePanel.add(sizeSpinner, BorderLayout.SOUTH);
+		add(sizePanel);
 
 		
 		//Initialize the Mass Spinner, set initial value and add listener
+		JPanel massControlPanel = new JPanel();
+		massControlPanel.setLayout(new BorderLayout());
 		massSpinner = new DoubleJSpinner(getSelectedObjectFromComboBox().mass, 0, 10000000, 1);
 		massSpinner.addChangeListener(e -> massSpinnerChanged());
 		massSpinner.setValue(getSelectedObjectFromComboBox().mass);
-		add(massSpinner);
+		massControlPanel.add(massSpinner, BorderLayout.CENTER);
+		JLabel massLabel = new JLabel("Mass:");
+		massControlPanel.add(massLabel, BorderLayout.NORTH);
+		massSpinner.setWidth(75);
+		add(massControlPanel);
 
+		JPanel focusPanel = new JPanel();
+		focusPanel.setLayout(new BorderLayout());
 		centerDisplayCheckBox = new JCheckBox("Focus on this object ");
 		centerDisplayCheckBox.addItemListener(e -> centreDisplayCheckBoxChanged(e));
-		add(centerDisplayCheckBox);
+		JLabel spacer = new JLabel(" ");
+		focusPanel.add(spacer, BorderLayout.CENTER);
+		focusPanel.add(centerDisplayCheckBox, BorderLayout.SOUTH);
+		add(focusPanel);
 	}
 
 
@@ -89,7 +108,7 @@ public class PlanetBuilderPanel extends JPanel{
 	*/
 	public void reset(){
 		
-		objects = OrbitalSimulator.model.getObjects();
+		objects = simulator.model.getObjects();
 		resetCombobox();
 		resetSpinners();
 	}
@@ -168,6 +187,8 @@ public class PlanetBuilderPanel extends JPanel{
 		getSelectedObjectFromComboBox().mass = (double) massSpinner.getValue();
 	}
 
+	
+	
 	/**
 	* Takes appropriate action when the.....
 	*/
@@ -176,10 +197,10 @@ public class PlanetBuilderPanel extends JPanel{
 		int state = e.getStateChange();
 		// state = 1 Slected, state = 2 Deselected 
 		if(state == 1){
-			OrbitalSimulator.view.display.centreDisplayAroundObject(getSelectedObjectFromComboBox());
-			OrbitalSimulator.view.display.centerDisplay();
+			simulator.view.display.centreDisplayAroundObject(getSelectedObjectFromComboBox());
+			simulator.view.display.centerDisplay();
 		}else{
-			OrbitalSimulator.view.display.dontCenterDisplay();
+			simulator.view.display.dontCenterDisplay();
 		}
 	}
 

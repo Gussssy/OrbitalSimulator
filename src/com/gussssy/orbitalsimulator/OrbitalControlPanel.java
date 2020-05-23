@@ -16,6 +16,8 @@ import java.awt.event.ActionEvent;
 */
 public class OrbitalControlPanel extends JPanel{
 
+	private OrbitalSimulator simulator;
+	
 	private ButtonListener buttonListener = new ButtonListener();
 
 	private JPanel div1 = new JPanel();
@@ -41,7 +43,9 @@ public class OrbitalControlPanel extends JPanel{
 	/**
 	* Sole Constructor.
 	*/
-	public OrbitalControlPanel(){
+	public OrbitalControlPanel(OrbitalSimulator simulator){
+
+		this.simulator = simulator;
 
 		plus.addActionListener(buttonListener);
 		minus.addActionListener(buttonListener);
@@ -96,7 +100,7 @@ public class OrbitalControlPanel extends JPanel{
 
 	private void plusPressed(){
 		System.out.println("Plus Pressed");
-		OrbitalSimulator.view.display.increaseModelScale();
+		simulator.view.display.increaseModelScale();
 
 	}
 
@@ -104,7 +108,7 @@ public class OrbitalControlPanel extends JPanel{
 
 	private void minusPressed(){
 		System.out.println("Minus Pressed");
-		OrbitalSimulator.view.display.decreaseModelScale();
+		simulator.view.display.decreaseModelScale();
 
 	}
 
@@ -112,7 +116,7 @@ public class OrbitalControlPanel extends JPanel{
 
 	private void resetPressed(){
 		System.out.println("Reset Pressed");
-		OrbitalSimulator.reset();
+		simulator.reset();
 
 	}
 
@@ -120,7 +124,7 @@ public class OrbitalControlPanel extends JPanel{
 
 	private void upPressed(){
 		System.out.println("Up Pressed");
-		OrbitalSimulator.view.display.panUp();
+		simulator.view.display.panUp();
 
 	}
 
@@ -128,7 +132,7 @@ public class OrbitalControlPanel extends JPanel{
 
 	private void downPressed(){
 		System.out.println("Down Pressed");
-		OrbitalSimulator.view.display.panDown();
+		simulator.view.display.panDown();
 
 	}
 
@@ -136,7 +140,7 @@ public class OrbitalControlPanel extends JPanel{
 
 	private void leftPressed(){
 		System.out.println("Left Pressed");
-		OrbitalSimulator.view.display.panLeft();
+		simulator.view.display.panLeft();
 
 	}
 
@@ -144,7 +148,7 @@ public class OrbitalControlPanel extends JPanel{
 
 	private void rightPressed(){
 		System.out.println("Right Pressed");
-		OrbitalSimulator.view.display.panRight();
+		simulator.view.display.panRight();
 
 	}
 
@@ -152,7 +156,8 @@ public class OrbitalControlPanel extends JPanel{
 
 	private void speedDownPressed(){
 		System.out.println("Speed Down Pressed");
-		OrbitalSimulator.increaseTimeDelay();
+		//OrbitalSimulator.increaseTimeDelay();
+		simulator.increaseUpdateCap();
 
 	}
 
@@ -160,7 +165,9 @@ public class OrbitalControlPanel extends JPanel{
 
 	private void speedUpPressed(){
 		System.out.println("Speed Up Pressed");
-		OrbitalSimulator.decreaseTimeDelay();
+		//OrbitalSimulator.decreaseTimeDelay();
+		simulator.decreaseUpdateCap();
+		//simulator.increaseUpdateCap();
 
 	}
 

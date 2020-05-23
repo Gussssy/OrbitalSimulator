@@ -16,6 +16,8 @@ import java.text.DecimalFormat;
 */
 public class OrbitalDisplay extends JPanel{
 
+	private OrbitalSimulator simulator;
+	
 	//Panel Dimension Variables
 	private int width;
 	private int height;
@@ -36,19 +38,20 @@ public class OrbitalDisplay extends JPanel{
 
 
 
-	public OrbitalDisplay(int width, int height){
+	public OrbitalDisplay(OrbitalSimulator simulator, int width, int height){
 		
 		System.out.println("Initializing Display");
 
+		this.simulator = simulator;
 		this.width = width;
 		this.height = height;
 
 		//Initialize Scale Variables
-		modelScale = OrbitalSimulator.model.getModelScale();
+		modelScale = simulator.model.getModelScale();
 		displayScale = modelScale;	//for now model scale - display scale untill v2.0 is fully built to v1.2 level; fucntionality
 
 		//Centre the display around the Sun:
-		centreDisplayAroundObject(OrbitalSimulator.model.getObjects().get(0));
+		centreDisplayAroundObject(simulator.model.getObjects().get(0));
 
 		//Initialize Display Coords (as they are initially zero)
 		modelToDisplayCoords(); //must be done before centering I think
@@ -81,7 +84,7 @@ public class OrbitalDisplay extends JPanel{
 		//System.out.println("displayScale(int): "+ displayScale);
 		//System.out.println("modelDisplayRatio: "+ modelDisplayRatio);
 
-		for(Ob o : OrbitalSimulator.model.getObjects()){
+		for(Ob o : simulator.model.getObjects()){
 
 			o.dispX = o.x*modelDisplayRatio + xOffset;
 			o.dispY = o.y*modelDisplayRatio + yOffset;
@@ -215,7 +218,7 @@ public class OrbitalDisplay extends JPanel{
 		//g.fillOval(500,500,100,100);
 
 		//draw the objects
-		for(Ob o : OrbitalSimulator.model.getObjects()){
+		for(Ob o : simulator.model.getObjects()){
 			g.setColor(o.color);
 			g.fillOval((int)(o.dispX-o.size/2),(int)(o.dispY-o.size/2),(int)o.size,(int)o.size);
 		}
@@ -231,9 +234,9 @@ public class OrbitalDisplay extends JPanel{
 		//g.drawString("Mass: "+"330,000 Earth Mass", x, y+10);
 		//g.drawString("Velocity: ?", x, y+20);
 
-		g.drawString("Day: "+ OrbitalSimulator.model.getDay(), 0,10);
+		g.drawString("Day: "+ simulator.model.getDay(), 0,10);
 
-		for(Ob o : OrbitalSimulator.model.getObjects()){
+		for(Ob o : simulator.model.getObjects()){
 			g.drawString(o.name,(int)(o.dispX+o.size/2),(int)o.dispY-10);
 			//g.drawString("Mass: "+o.mass+" Earth Masses",(int)o.x,(int)o.y+10);
 			g.drawString("Vx: "+nForm.format(o.vx)+"kmps",(int)(o.dispX+o.size/2),(int)o.dispY);
@@ -256,7 +259,7 @@ public class OrbitalDisplay extends JPanel{
 		Dimension size = getSize();
 		width = size.width;
 		height = size.height;
-		centreDisplayAroundObject(OrbitalSimulator.model.getObjects().get(0));
+		centreDisplayAroundObject(simulator.model.getObjects().get(0));
 	}
 
 	private class DisplayListener implements ComponentListener{
