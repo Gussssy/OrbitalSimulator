@@ -29,6 +29,13 @@ public class DoubleJSpinner extends JSpinner{
 		setEditor(editor);
 	}
 	
+	
+	
+	/**
+	 * Sets the width of the spinner.
+	 * 
+	 *  @param width the width to set the spinner (in pixels)
+	 **/
 	public void setWidth(int width){
 		
 		JComponent field = ((JSpinner.DefaultEditor) this.getEditor());
