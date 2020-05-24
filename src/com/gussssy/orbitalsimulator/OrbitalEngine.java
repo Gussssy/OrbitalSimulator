@@ -83,10 +83,20 @@ public class OrbitalEngine implements Runnable{
 
 	/**
 	 * Uses a basic game loop to run the simulation. 
-	 *  - the simulation only updates after a certain amount of time (UPDATE_CAP) has passed. 
+	 *  
+	 *  The simulation only updates after a certain amount of time (UPDATE_CAP) has passed.
+	 *  After an update the boolean render is set to true so a frame is rendered on the current iteration.
+	 *  If efficiency test mode is enabled, frame rate will be uncapped to allow testing of renderering efficiency.
+	 *   
 	 * 
-	 * This was adapted from youtuber Majoolwip, specifically this video: https://www.youtube.com/watch?v=4iPEjFUZNsw&t=6s
+	 * This was adapted from youtuber Majoolwip, specifically this video: https://www.youtube.com/watch?v=4iPEjFUZNsw&t
 	 * 
+	 * 
+	 * 
+	 * Currently the speed of the simulation can be chnaged but at the moment this coupled to the frame rate which is particularily problematic at low speeds.
+	 * For the solution I have narrowed down two options: 
+	 * 	1. Allow update caps that 1x, 2x, 3x, 5x, 10x, 50x, 0.5x, where x is the initial update cap. For 2x, render every second update, for 3x every third etx
+	 * 	2. Have a second time variable to track how long since last frame and enforce 60fps regardless of update rate.
 	 **/
 	@Override
 	public void run(){
@@ -136,7 +146,7 @@ public class OrbitalEngine implements Runnable{
 
 				// [TEST_FRAME_LIMITING]
 				if(count >= 60){
-					System.out.println("Count Reset");
+					//System.out.println("Count Reset");
 				}else{
 					count++;
 				}
