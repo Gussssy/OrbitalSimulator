@@ -1,7 +1,10 @@
-package com.gussssy.orbitalsimulator;
+package com.gussssy.orbitalsimulator.view;
 
 import java.awt.*;
 import javax.swing.*;
+
+import com.gussssy.orbitalsimulator.OrbitalSimulator;
+
 import java.text.DecimalFormat;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;

@@ -1,4 +1,4 @@
-package com.gussssy.orbitalsimulator;
+package com.gussssy.orbitalsimulator.view;
 
 import java.awt.*;
 import javax.swing.*;
@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.event.ChangeListener;
 
 import com.gussssy.component.DoubleJSpinner;
+import com.gussssy.orbitalsimulator.Ob;
+import com.gussssy.orbitalsimulator.OrbitalSimulator;
 
 import javax.swing.event.ChangeEvent;
 import java.awt.event.ItemListener;

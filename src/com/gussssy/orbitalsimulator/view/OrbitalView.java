@@ -1,4 +1,4 @@
-package com.gussssy.orbitalsimulator;
+package com.gussssy.orbitalsimulator.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -7,6 +7,8 @@ import java.net.URL;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+
+import com.gussssy.orbitalsimulator.OrbitalSimulator;
 
 /**
 * Creates and holds all the GUI elements.

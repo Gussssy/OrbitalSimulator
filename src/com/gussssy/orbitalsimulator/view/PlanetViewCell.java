@@ -1,6 +1,9 @@
-package com.gussssy.orbitalsimulator;
+package com.gussssy.orbitalsimulator.view;
 	
 import javax.swing.*;
+
+import com.gussssy.orbitalsimulator.Ob;
+
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;

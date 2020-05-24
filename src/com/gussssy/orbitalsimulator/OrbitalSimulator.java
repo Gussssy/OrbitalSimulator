@@ -1,5 +1,6 @@
 package com.gussssy.orbitalsimulator;
 
+import com.gussssy.orbitalsimulator.view.OrbitalView;
 
 /**
 * OrbitalSimulator : MCV Controller
