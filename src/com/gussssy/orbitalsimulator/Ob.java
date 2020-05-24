@@ -16,34 +16,37 @@ public class Ob implements Serializable{
 
 	// Gravitational force from the parent body in newtons
 	/**The gravitational force in Newtons, applied to this body by the last object it was compared with*/
-	double gForce;
+	public double gForce;
 	
 	
 	// MODEL COORDS
 	/**The x value of the objects loaction within the model space*/
-	double x;
+	public double x;
 	/**The y value of the objects loaction within the model space*/		
-	double y;
+	public double y;
 
 	
 	//Display coords
 	/**The x coordinate of the objects loaction in the display space*/
-	double dispX;
+	public double dispX;
 	/**The y coordinate of the objects loaction in the display space*/
-	double dispY;
+	public double dispY;
 
 	//Velocity, given in km/s
 	/**The x component of the objects velocity in km per second*/
-	double vx;
+	public double vx;
 	/**The y component of the objects velocity in km per second*/
-	double vy;
+	public double vy;
 	
 	
 	/**The colour the object will display*/
-	Color color;
+	public Color color;
 	
 	/**The size of the object in the display*/
-	double size;
+	public double size;
+	
+	/** Serial Version ID. **/
+	private static final long serialVersionUID = 5136180108127531507L;
 	
 
 	/**
