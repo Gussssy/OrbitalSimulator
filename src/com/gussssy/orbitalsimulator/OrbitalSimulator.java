@@ -74,11 +74,11 @@ public class OrbitalSimulator{
 		// initialize the engine that will execute the run loop
 		engine = new OrbitalEngine(simulator);
 		
-		
-		System.out.println("After thread start");
+		// start the simulation
+		engine.start();
 	}
-
 	
+
 	
 	/**
 	* Pauses the simulation. The run loop still executes but the simualtion does not. 

@@ -151,9 +151,6 @@ public class OrbitalModel{
 
 			}
 		}
-
-		//System.out.println("Velocvity Update for day "+day+" is complete");
-
 	}
 
 

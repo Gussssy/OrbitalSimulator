@@ -70,13 +70,20 @@ public class OrbitalEngine implements Runnable{
 
 	public OrbitalEngine(OrbitalSimulator simulator){
 
-		this.simulator = simulator;
+		this.simulator = simulator;	
+	}
+	
+	
+	/**
+	 * Starts the simulation. 
+	 */
+	public void start(){
 		
 		//initialize the thread that will execute the run loop
 		thread = new Thread(this); 
-				
+						
 		//begin the simulation
-		thread.run();
+		thread.run();	
 	}
 
 
@@ -270,6 +277,12 @@ public class OrbitalEngine implements Runnable{
 	public void reset(){
 		
 		updateCap = UPDATE_CAP;
+	}
+	
+	public String toString(){
+		
+		String message = "Engine is running: " + running;
+		return message;
 	}
 
 
