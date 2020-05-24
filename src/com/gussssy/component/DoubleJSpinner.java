@@ -1,4 +1,4 @@
-package com.gussssy.orbitalsimulator;
+package com.gussssy.component;
 
 import java.awt.Dimension;
 
@@ -32,9 +32,9 @@ public class DoubleJSpinner extends JSpinner{
 	
 	
 	/**
-	 * Sets the width of the spinner.
+	 * Sets the width of the spinners text field.
 	 * 
-	 *  @param width the width to set the spinner (in pixels)
+	 *  @param width: the width to set the spinner (in pixels)
 	 **/
 	public void setWidth(int width){
 		
