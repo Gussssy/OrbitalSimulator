@@ -74,7 +74,7 @@ public class OrbitalSimulator{
 		// initialize the engine that will execute the run loop
 		engine = new OrbitalEngine(simulator);
 		
-		// start the simulation
+		// start the simulation run loop
 		engine.start();
 	}
 	

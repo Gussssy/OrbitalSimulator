@@ -75,7 +75,7 @@ public class OrbitalEngine implements Runnable{
 	
 	
 	/**
-	 * Starts the simulation. 
+	 * Starts the simulation. Makes a new thread and assigns it to execution of the run loop. 
 	 */
 	public void start(){
 		
