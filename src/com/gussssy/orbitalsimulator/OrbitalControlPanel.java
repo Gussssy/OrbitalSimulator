@@ -87,11 +87,11 @@ public class OrbitalControlPanel extends JPanel{
 
 		if(pause.getText().equals("||")){
 			pause.setText("o");
-			OrbitalSimulator.pause();
+			simulator.pause();
 
 		}else{
 			pause.setText("||");
-			OrbitalSimulator.play();
+			simulator.play();
 		}
 		
 	}
@@ -161,7 +161,7 @@ public class OrbitalControlPanel extends JPanel{
 	private void speedDownPressed(){
 		System.out.println("Speed Down Pressed");
 		//OrbitalSimulator.increaseTimeDelay();
-		simulator.increaseUpdateCap();
+		simulator.engine.increaseUpdateCap();
 
 	}
 
@@ -170,7 +170,7 @@ public class OrbitalControlPanel extends JPanel{
 	private void speedUpPressed(){
 		System.out.println("Speed Up Pressed");
 		//OrbitalSimulator.decreaseTimeDelay();
-		simulator.decreaseUpdateCap();
+		simulator.engine.decreaseUpdateCap();
 		//simulator.increaseUpdateCap();
 
 	}

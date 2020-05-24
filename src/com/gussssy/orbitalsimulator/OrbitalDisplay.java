@@ -174,9 +174,7 @@ public class OrbitalDisplay extends JPanel{
 
 		System.out.println("Modified Model Scale: "+ modelScale);
 
-		//this maybe should not be here, maybe a seperate method used by all scale modifying methods
-			//how do I know this need to be called ...? if i was to leave this and come back i would have no idea what going on 
-				//wait no I do not need to, this is called each repaint..... but if the sim is paused... it does, unless I force manual repaint with resize
+		
 		modelToDisplayCoords();
 
 		//when the sclae is changed, need to recenter
@@ -192,9 +190,7 @@ public class OrbitalDisplay extends JPanel{
 
 		System.out.println("Modified Model Scale: "+ modelScale);
 
-		//this maybe should not be here, maybe a seperate method used by all scale modifying methods
-			//how do I know this need to be called ...? if i was to leave this and come back i would have no idea what going on 
-				//wait no I do not need to, this is called each repaint..... but if the sim is paused... it does, unless I force manual repaint with resize
+		// Reset display coords contained in each object.
 		modelToDisplayCoords();
 
 		//when the sclae is changed, need to recenter
@@ -206,7 +202,7 @@ public class OrbitalDisplay extends JPanel{
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 
-		//Call modelToDisplayCoords to make sure display coords have been updated if medel coords have chnaged
+		//Call modelToDisplayCoords to make sure display coords have been updated if model coords have chnaged
 		modelToDisplayCoords();
 
 		if(centered){
