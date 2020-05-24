@@ -48,7 +48,7 @@ public class OrbitalMath{
 
 	/** UPDATE VELOCITY
 	*
-	*	updates the velocity of a body by calculating the change in velocity resulting from gravitational force
+	*	updates the velocity of a body by calculating the change in velocity resulting from gravitational force over 24 hours
 	*/
 	public static void updateVelocity(Ob body1, Ob body2){
 
@@ -94,30 +94,31 @@ public class OrbitalMath{
 		}
 		
 		
-		//conversion to acceleration per day
+		// conversion to acceleration per day
+			// x axis
 		ax = ax*60*60*24; // convert from m/s^2 to m/day^2 
 		if(test){System.out.println("x Acceleration : "+ax+"m/day^2 ");}
 		ax = ax/1000; //convert from  m/day^2 to km/day^2
 		if(test){System.out.println("x Acceleration : "+ax+"km/s ");}
 		
-
-		
-		//conversion to m/day^2
+			// y axis
 		ay = ay*60*60*24; // convert from m/s^2 to m/day^2 
 		if(test){System.out.println("y Acceleration : "+ay+"m/day^2 ");}
 		ay = ay/1000; //convert from  m/day^2 to km/day^2
 		if(test){System.out.println("y Acceleration : "+ay+"km/day^2 ");}
 
-		//udate velocity by adding the acceleration resulting from 24 hours of gravitaional force
+		// udate velocity by adding the acceleration resulting from 24 hours of gravitaional force
 		body2.vx += ax;
 		body2.vy += ay;
 	}
 
 	/* Update Positions 
-
-		Updates the position of the body
-		- velocity is in km/s
-		- location is given in units of million km (mkm)
+	*
+	*	Updates the position of the body
+	*	- velocity is in km/s
+	*	- location is given in units of million km (mkm)
+	*	
+	*	@param body: the object that is having its position updated in the model space
 	*/
 	public static void updatePositions(Ob body){
 
@@ -127,8 +128,6 @@ public class OrbitalMath{
 
 		//double initX = body.x;
 		//double initY = body.y;
-
-		
 
 		body.x += body.vx*60*60*24/1000000; 
 		body.y += body.vy*60*60*24/1000000;
@@ -154,7 +153,7 @@ public class OrbitalMath{
 	*  This is done by 
 	*	1. calculating first x distance between the child anbd parent, (The OPPOSITE)
 	*   2. then calculating the radius (The HYPOTENUSE)
-	*    3. then using sin-1(O/H)
+	*   3. then using sin^-1(O/H)
 	*/
 	public static double getTheta(Ob parent, Ob child ){
 		
@@ -185,9 +184,10 @@ public class OrbitalMath{
 
 
 
-	/** GET DISTANCE BETWEEN  
-	*
-	* Find the distance beween two bodies, given in millions of kilometres
+	/**  
+	* Find the distance beween two bodies, given in millions of kilometres.
+	* 
+	* @return the distance between the two given bodies
 	*/
 	public static double getDistanceBetween(Ob body1, Ob body2){
 		double radius = Math.sqrt(Math.pow(body2.x-body1.x,2)+Math.pow(body2.y-body1.y,2));
@@ -195,9 +195,23 @@ public class OrbitalMath{
 	}
 
 
-	public static int getQuadrant(Ob centre, Ob distant){
-		double xDistance = distant.x - centre.x;
-		double yDistance = distant.y - centre.y;
+	/**
+	 * Gets the quadrant the 'distant' object is currently located in relative to the 'center' objects location.
+	 * 
+	 *  	above and to the left:	quadrant 1,
+	 *		above and to the right:	quadrant 2,
+	 *  	below and to the right:	quadrant 3,
+	 *  	below and to the left:	quadrant 4,
+	 *  
+	 *  It is important to know which quadrant the body in because this changes how vectors are calculated using the approach I have choosen.
+	 *  
+	 *  @param center	the object that will be considered at the origin
+	 *  @param distant	the object whose reative location to the center object we are interested in
+	 *  @return 		an int between 1 and 4 describing the relative location of the distant object to the center object
+	 **/
+	public static int getQuadrant(Ob center, Ob distant){
+		double xDistance = distant.x - center.x;
+		double yDistance = distant.y - center.y;
 
 		//If xDistance is positive
 		if(xDistance > 0){
