@@ -7,6 +7,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import com.gussssy.orbitalsimulator.Ob;
+import com.gussssy.orbitalsimulator.OrbitalMath;
 import com.gussssy.orbitalsimulator.OrbitalSimulator;
 
 import java.text.DecimalFormat;
@@ -21,6 +22,7 @@ import java.text.DecimalFormat;
 public class OrbitalDisplay extends JPanel{
 
 	private OrbitalSimulator simulator;
+	private OrbitalView view;
 	
 	//Panel Dimension Variables
 	private int width;
@@ -39,14 +41,36 @@ public class OrbitalDisplay extends JPanel{
 	private int yOffset = 0;			// how much the display is offset on the y axis
 	private Ob centeredObject;
 	private boolean centered = true;
+	
+	private boolean drawVelocityComponents = false;
+	
+	private Color textColor = new Color(255, 255, 255);
+	Font font = new Font("Plain",Font.BOLD,10);
+	
+	//private Point dayLabelCoords = new Point();
+	
+	
+	/** When true, will draw trails*/
+	private boolean drawTrails = true;
 
 
 
-	public OrbitalDisplay(OrbitalSimulator simulator, int width, int height){
+	public void setDrawTrails(boolean drawTrails) {
+		this.drawTrails = drawTrails;
+	}
+
+
+	public void setDrawVelocityComponents(boolean drawVelocityComponents) {
+		this.drawVelocityComponents = drawVelocityComponents;
+	}
+
+
+	public OrbitalDisplay(OrbitalSimulator simulator, OrbitalView view, int width, int height){
 		
 		System.out.println("Initializing Display");
 
 		this.simulator = simulator;
+		this.view = view;
 		this.width = width;
 		this.height = height;
 
@@ -67,9 +91,63 @@ public class OrbitalDisplay extends JPanel{
 		DisplayMouseAdapter dMouseAdapter = new DisplayMouseAdapter();
 		addMouseMotionListener(dMouseAdapter);
 		addMouseListener(dMouseAdapter);
+		
+		
 
 
 	}
+	
+	public void paintComponent(Graphics g){
+		super.paintComponent(g);
+
+		//Call modelToDisplayCoords to make sure display coords have been updated if model coords have chnaged
+		modelToDisplayCoords();
+
+		if(centered)centreDisplayAroundObject(centeredObject);
+				
+
+		// WIP DRAW TRAILS
+		
+		if(drawTrails){
+
+			for(TrailNode node : view.trailManager.nodes){
+				g.setColor(node.color);
+				g.fillOval((int)(node.x-node.size/2),(int)(node.y-node.size/2),node.size,node.size);
+			}
+		}
+		
+		
+		
+		
+		// DRAW OBJECTS
+		for(Ob o : simulator.model.getObjects()){
+			g.setColor(o.color);
+			g.fillOval((int)(o.dispX-o.size/2),(int)(o.dispY-o.size/2),(int)o.size,(int)o.size);
+		}
+		
+		
+		// DRAW TEXT
+		// Set font and color
+		g.setColor(textColor);
+		g.setFont(font);
+		
+		// Draw the Day in top left of the panel
+		g.drawString("Day: "+ simulator.model.getDay(), 0,10);
+
+		// Draw Object properties
+		for(Ob o : simulator.model.getObjects()){
+			g.drawString(o.name,(int)(o.dispX+o.size/2),(int)o.dispY-10);
+			
+			if(drawVelocityComponents){
+				g.drawString("Vx: "+nForm.format(o.vx)+"kmps",(int)(o.dispX+o.size/2),(int)o.dispY);
+				g.drawString("Vy: "+nForm.format(o.vy)+"kmps",(int)(o.dispX+o.size/2),(int)o.dispY+10);	
+			}else{
+				OrbitalMath.setTotalVelocity(o);
+				g.drawString("v: "+nForm.format(o.v)+"kmps",(int)(o.dispX+o.size/2),(int)o.dispY);
+			}
+		}
+	}
+
 
 
 	/** Model To Display Coordinates
@@ -96,8 +174,22 @@ public class OrbitalDisplay extends JPanel{
 		}
 
 	}
+	
+	/**
+	 * planned rework of coordinate conversion so trail nodes and objects use same operations
+	 * 
+	 * modelToDisplayCoordsSingleObject(DrawableObject object, modelX, modelY, dispX, yDisp, xOffset, yOffset modelRatio, displayRatio) 
+	 **/
 
-	public void displayToModelCoords(double x, double y){
+	/**
+	 * This method is only used for testing. 
+	 * Takes a single point via x and y value e.g the position of the sun in the display, and uses the reverse operation of model to display coords 
+	 * and then prints out the transformed x an y values. 
+	 * The printed out values should match the original model coords before they were converted to display coords.... 
+	 * ... so far this has always been the case.
+	 * 
+	 **/
+	public String displayToModelCoords(double x, double y){
 		double displayModelRatio = 1/modelDisplayRatio;
 		System.out.println("ModelDisplayRatio "+modelDisplayRatio);
 		System.out.println("DisplayModelRatio "+displayModelRatio);
@@ -107,37 +199,37 @@ public class OrbitalDisplay extends JPanel{
 
 		double modelY = y-yOffset;
 		modelY = modelY*displayModelRatio;
+		
+		return "Transformed Point x: "+modelX+", y: "+modelY;
 
-		System.out.println("Transformed Point x: "+modelX+", y: "+modelY);
+		//System.out.println("Transformed Point x: "+modelX+", y: "+modelY);
 	}
 
+	
+	/**
+	 * Centers the display around an Object 
+	 * 
+	 * @param object: the object that the display will ensure is always in the center
+	 **/
 	public void centreDisplayAroundObject(Ob object){
-
-		//if(!centered){
-		//	return;
-		//}
-
-		//display coords must be set before centering, this ensure that is done
-		//NOTE THIS MAY BE CALLED REDUNDANTLY WHICH I DONT LIKE 
-		//modelToDisplayCoords();
 
 		//System.out.println("Centrering the display around object: "+object.name);
 		//System.out.println("Initial Display x and y for this object: " + object.dispX+ ", "+object.dispY);
 		//System.out.println("Size of the Display: "+width+","+height);
 
-		//find x and y center
+		//find x and y center coordinates
 		int centreX = width/2;
 		int centreY = height/2;
 
-		//System.out.println("The Centre is: "+centreX + ", "+centreY);
+		//System.out.println("The Center is: "+centreX + ", "+centreY);
 
-		//set offset to be the centre value - x and y display values of the centering object
+		//set offset to be the center value - x and y display values of the centering object
 		xOffset += centreX - (int)object.dispX;
 		yOffset += centreY - (int)object.dispY;
 
 		//System.out.println("xOffset: "+xOffset+" yOffset: "+yOffset);
 
-		//set centeredObject DF value so that recentering is easy if the display scale or display size changes
+		//set centeredObject property to the object we just centered so recentering is easy if the display scale or display size changes
 		centeredObject = object;
 	}
 
@@ -203,58 +295,11 @@ public class OrbitalDisplay extends JPanel{
 
 
 
-	public void paintComponent(Graphics g){
-		super.paintComponent(g);
-
-		//Call modelToDisplayCoords to make sure display coords have been updated if model coords have chnaged
-		modelToDisplayCoords();
-
-		if(centered){
-			centreDisplayAroundObject(centeredObject);
-		}
-
-		Color color = new Color(255,255,0);
-		g.setColor(color);
-		//g.fillOval(500,500,100,100);
-
-		//draw the objects
-		for(Ob o : simulator.model.getObjects()){
-			g.setColor(o.color);
-			g.fillOval((int)(o.dispX-o.size/2),(int)(o.dispY-o.size/2),(int)o.size,(int)o.size);
-		}
-		
-		//draw the text
-		int x = 550;
-		int y = 450;
-		color = new Color(255,255,255);
-		g.setColor(color);
-		Font font = new Font("Plain",Font.BOLD,10);
-		g.setFont(font);
-		//g.drawString("The Sun",x,y);
-		//g.drawString("Mass: "+"330,000 Earth Mass", x, y+10);
-		//g.drawString("Velocity: ?", x, y+20);
-
-		g.drawString("Day: "+ simulator.model.getDay(), 0,10);
-
-		for(Ob o : simulator.model.getObjects()){
-			g.drawString(o.name,(int)(o.dispX+o.size/2),(int)o.dispY-10);
-			//g.drawString("Mass: "+o.mass+" Earth Masses",(int)o.x,(int)o.y+10);
-			g.drawString("Vx: "+nForm.format(o.vx)+"kmps",(int)(o.dispX+o.size/2),(int)o.dispY);
-			g.drawString("Vy: "+nForm.format(o.vy)+"kmps",(int)(o.dispX+o.size/2),(int)o.dispY+10);
-			//g.drawString("Gravitational Force: "+o.gForce+"Newtons",(int)(o.x+o.size/2),(int)o.y+20);
-
-		}
-
-		//System.out.println("Printing Display Coords");
-		//
-		//print object coords for debugging
-		//for(Ob o : OrbitalSimulator.model.getObjects()){
-		//	System.out.println(o.name+" dispX: "+o.dispX+", dispY: "+o.dispY);
-		//}
-		
-
-	}
-
+	
+	
+	/** 
+	 * When the size of the panel changes this method is called to reorganize the contents to fit into the resized panel
+	 */
 	private void updateSize(){
 		Dimension size = getSize();
 		width = size.width;
@@ -295,42 +340,52 @@ public class OrbitalDisplay extends JPanel{
 		}
 	}
 
+	
+	/**
+	 * Inner Class to handle mouse events within the display panel. 
+	 * 
+	 *  Currently does nothing useful. 
+	 **/
 	private class DisplayMouseAdapter extends MouseAdapter{
 
-	public void mouseClicked(MouseEvent e){
-		System.out.println("Mouse Clicked");
-		System.out.println(e.getPoint());
-		System.out.println("X and Y offsets: "+xOffset+" ,"+yOffset);
-		displayToModelCoords(e.getPoint().x,e.getPoint().y);
-	}
+		/**
+		 * When the mouse is clicked on the display panel, the location of the click is printed to the console.
+		 * The location is then copverted from display coords to model coords which are then printed to the console also.  
+		 **/
+		public void mouseClicked(MouseEvent e){
+			//System.out.println("Mouse Clicked");
+			System.out.println("Mouse Clicked at: " + e.getPoint());
+			System.out.println("X and Y offsets: "+xOffset+" ,"+yOffset);
+			System.out.println("Location of click in the model space: " + displayToModelCoords(e.getPoint().x,e.getPoint().y));
+		}
 
-	public void mouseDragged(MouseEvent e){
-		System.out.println("Mouse Dragged");
-	}
+		public void mouseDragged(MouseEvent e){
+			System.out.println("Mouse Dragged");
+		}
 
-	public void mouseEntered(MouseEvent e){
-		System.out.println("Mouse Entered");
-	}
+		public void mouseEntered(MouseEvent e){
+			System.out.println("Mouse Entered");
+		}
 
-	public void mouseExited(MouseEvent e){
-		System.out.println("Mouse Exited");
-	}
+		public void mouseExited(MouseEvent e){
+			System.out.println("Mouse Exited");
+		}
 
-	public void mouseMoved(MouseEvent e){
-		//System.out.println("Mouse Moved");
-	}
+		public void mouseMoved(MouseEvent e){
+			//System.out.println("Mouse Moved");
+		}
 
-	public void mousePressed(MouseEvent e){
-		System.out.println("Mouse Pressed...?");
-	}
+		public void mousePressed(MouseEvent e){
+			System.out.println("Mouse Pressed...?");
+		}
 
-	public void mouseReleased(MouseEvent e){
-		System.out.println("Mouse Released");
-	}
+		public void mouseReleased(MouseEvent e){
+			System.out.println("Mouse Released");
+		}
 
-	public void mouseWheelMoved(MouseEvent e){
-		System.out.println("Mouse Wheel Moved");
-	}
+		public void mouseWheelMoved(MouseEvent e){
+			System.out.println("Mouse Wheel Moved");
+		}
 
 	}
 

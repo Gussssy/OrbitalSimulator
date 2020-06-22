@@ -25,7 +25,7 @@ public class PlanetBuilderPanel extends JPanel{
 	
 	private OrbitalSimulator simulator;
 	
-	/**A JCombobox that wil contain the name each object*/
+	/**A JCombobox that will contain the name each object*/
 	private JComboBox planetSelect;
 
 	/** A JPanel that displays an image of the selected object  */
@@ -95,6 +95,7 @@ public class PlanetBuilderPanel extends JPanel{
 		massSpinner.setWidth(75);
 		add(massControlPanel);
 
+		// Set up the check box controlling centering of the display around objects
 		JPanel focusPanel = new JPanel();
 		focusPanel.setLayout(new BorderLayout());
 		focusBox = new JCheckBox("Focus on this object ");

@@ -3,10 +3,10 @@ package com.gussssy.orbitalsimulator.view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.net.URL;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import com.gussssy.orbitalsimulator.OrbitalSimulator;
 
@@ -15,7 +15,7 @@ import com.gussssy.orbitalsimulator.OrbitalSimulator;
 */
 public class OrbitalView{
 
-	private OrbitalSimulator simulator;
+	public OrbitalSimulator simulator;
 	
 	//  TODO: 23/5/20 determine which of these need to be public and which can be private. 
 	public OrbitalDisplay display;
@@ -38,16 +38,22 @@ public class OrbitalView{
 	private int controlHeight = 75;
 	private Dimension controlDim = new Dimension(controlWidth,controlHeight);
 
-	// Planet View Panel: 
-	private int planetPanelWidth = 1000;
-	private int planetPanelHeight = 100;
-	private Dimension planetPanelDim = new Dimension(planetPanelWidth,planetPanelHeight);
 
 	// Planet Builder Panel
 	private int planetBuilderPanelWidth = 1000;
 	private int planetBuilderPanelHeight = 100;
 	private Dimension planetBuilderPanelDim = new Dimension(planetBuilderPanelWidth,planetBuilderPanelHeight);
 
+	// [WIP] bottom panel will contain everything that goes at the bottom of the frame
+	private JPanel bottomPanel = new JPanel();
+	
+	
+	// [WIP] Console Panel 
+	private JPanel consolePanel = new JPanel();
+	
+	// [WIP] Trails
+	public TrailManager trailManager;// = new TrailManager();
+	
 	public OrbitalView(OrbitalSimulator simulator){
 
 		System.out.println("Initializing GUI");
@@ -63,13 +69,13 @@ public class OrbitalView{
 		frame.setLayout(new BorderLayout());
 
 		// Make the Display Panel. (Display the simulation)
-		display = new OrbitalDisplay(simulator, displayWidth,displayHeight);
+		display = new OrbitalDisplay(simulator, this, displayWidth,displayHeight);
 		display.setPreferredSize(displayDim);
 		display.setBackground(Color.black);
 		display.setVisible(true);
 
 		// Make the control panel (appears at top of the window, used to control the simulation)
-		controlPanel = new OrbitalControlPanel(simulator);
+		controlPanel = new OrbitalControlPanel(simulator, this);
 		controlPanel.setPreferredSize(controlDim);
 		controlPanel.setVisible(true);
 
@@ -86,6 +92,8 @@ public class OrbitalView{
 		frame.add(planetBuilderPanel, BorderLayout.SOUTH);
 		frame.setVisible(true);
 		frame.pack();
+		
+		trailManager = new TrailManager(simulator);
 
 	}
 	
@@ -99,6 +107,22 @@ public class OrbitalView{
 	public void reset(){
 		
 		planetBuilderPanel.reset();
+		trailManager.reset();
+	}
+	
+	
+	public void toggleDrawVelocityComponents(boolean show){
+		
+			display.setDrawVelocityComponents(show);
+	}
+	
+	
+	public void setDrawTrails(boolean show){
+		
+		// If the trails have been disabled, reset the trails so old trails dont appear when reactivated
+		if(show == false)trailManager.reset();
+		
+		display.setDrawTrails(show);
 	}
 
 }

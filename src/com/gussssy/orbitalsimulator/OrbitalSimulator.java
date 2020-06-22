@@ -24,15 +24,18 @@ public class OrbitalSimulator{
 	 **/
 	public OrbitalSimulator simulator;
 	
+	
 	/**
 	* MVC: View. Contains all the View elements
 	**/
 	public OrbitalView view;
 	
+	
 	/**
 	 *  Executes the run loop that powers the simulation 
 	 **/
 	public OrbitalEngine engine;
+	
 	
 	/**
 	* MVC Model. Holds the data for the simulation and performs the calculations etc
@@ -44,13 +47,14 @@ public class OrbitalSimulator{
 	/**
 	* Main method/Program entry point.
 	* 
-	* Initialises the Model and View then starts the run loop by calling run()
+	* Initializes the Model and View then starts the run loop by calling run()
 	*/
 	public static void main(String[] args){
 
 		System.out.println("Starting Orbital Simulator v2.0");
 		
-		OrbitalSimulator simulator = new OrbitalSimulator();
+		new OrbitalSimulator();
+		
 	}
 	
 	
@@ -76,6 +80,12 @@ public class OrbitalSimulator{
 		
 		// start the simulation run loop
 		engine.start();
+		System.out.println("Simulator init finished");
+	}
+	
+	public void simulateDay(){
+		model.simulateDay();
+		view.trailManager.update();
 	}
 	
 

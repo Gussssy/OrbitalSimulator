@@ -63,6 +63,7 @@ public class OrbitalEngine implements Runnable{
 	int updateCapIndex = 2;
 	double updateCap = 1.0/60.0;
 	double frameCap = 1.0/60.0;
+	boolean printRenderTime = true;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -124,6 +125,10 @@ public class OrbitalEngine implements Runnable{
 		int accumulatedFrames = 0;
 		int numSeconds = 0;
 
+		// render time tracking variable
+		double accumulatedRenderTime = 0;
+		double timeBeforeRender = 0;
+
 		// [TEST_FRAME_LIMITING] TESTING NEW WAY TO LIMIT FRAMES WITH LOW UPDATE CAP (low update cap = lots of updates)
 		int count = 0;
 
@@ -160,18 +165,19 @@ public class OrbitalEngine implements Runnable{
 
 
 				//UPDATE: Simulate a day (as long as simulation is not paused)
-				if(!paused)simulator.model.simulateDay();
+				if(!paused)simulator.simulateDay();
 			}
 
 
 			// FPS TRACKING BLOCK
 			// count FPS after 1 second
 			if(frameTime >= 1.0){
-
+				
+				numSeconds++;
+				accumulatedFrames += frames;
+				
 				//Determines max possible frame rendering for efficiency testing purposes
 				if(efficiencyTestMode){
-					accumulatedFrames += frames;
-					numSeconds++;
 					System.out.println("Average Max FPS: " + getAverageMaxFrames(accumulatedFrames, numSeconds));
 				}
 
@@ -181,6 +187,9 @@ public class OrbitalEngine implements Runnable{
 				frames = 0;
 
 				if(printFPS)System.out.println("fps: "+fps);
+				
+				if(printRenderTime)System.out.println("Average Render Time: " + accumulatedRenderTime/accumulatedFrames);
+				//accumulatedRenderTime = 0;
 			}
 
 
@@ -192,7 +201,9 @@ public class OrbitalEngine implements Runnable{
 				//RENDER A FRAME
 
 				//Update the display
+				timeBeforeRender = System.nanoTime() / 1000000000.0;
 				simulator.view.display.repaint();
+				accumulatedRenderTime += System.nanoTime() / 1000000000.0 - timeBeforeRender;
 				frames++;
 
 				// set render to false so rendering occurs once after each update

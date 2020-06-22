@@ -236,5 +236,13 @@ public class OrbitalMath{
 		}
 
 	}
+	
+	
+	
+	
+	public static void setTotalVelocity(Ob object){
+		
+		object.v = Math.sqrt(Math.pow(object.vx, 2) + Math.pow(object.vy, 2));
+	}
 
 }

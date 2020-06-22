@@ -1,13 +1,16 @@
 package com.gussssy.orbitalsimulator.view;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JPanel;
 
 import com.gussssy.orbitalsimulator.OrbitalSimulator;
-
-import java.text.DecimalFormat;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 /**
 * A Panel located at the top of the frame containing various controls for the simulation such as:
@@ -20,18 +23,22 @@ import java.awt.event.ActionEvent;
 public class OrbitalControlPanel extends JPanel{
 
 	private OrbitalSimulator simulator;
+	private OrbitalView view;
 	
 	private ButtonListener buttonListener = new ButtonListener();
 
-	private JPanel div1 = new JPanel();
+	private JPanel zoomControlsPanel = new JPanel();
+	
 	private JButton plus = new JButton("+");
 	private JButton minus = new JButton("-");
+	
+	private JPanel resetPanel = new JPanel();
 	private JButton reset = new JButton("RESET");
 	
-	private JPanel div2 = new JPanel();
+	private JPanel pausePanel = new JPanel();
 	private JButton pause = new JButton("||");;
 		
-	private JPanel div3 = new JPanel();
+	private JPanel panControlsPanel = new JPanel();
 	private JButton up = new JButton("^");
 	private JButton down = new JButton("v");
 	private JButton left = new JButton("<");
@@ -40,19 +47,25 @@ public class OrbitalControlPanel extends JPanel{
 	private JPanel speedControls = new JPanel();
 	private JButton speedUp = new JButton(">>");
 	private JButton speedDown = new JButton("<<");
+	
+	private JPanel checkBoxPanel = new JPanel();
+	private JCheckBox showVelocityComponents = new JCheckBox("Show velocity components");
+	private JCheckBox showTrails = new JCheckBox("Show trails");
+	
+	private Dimension buttonSize = new Dimension(20,20);
 
 
 
 	/**
 	* Sole Constructor.
 	*/
-	public OrbitalControlPanel(OrbitalSimulator simulator){
+	public OrbitalControlPanel(OrbitalSimulator simulator, OrbitalView view){
 
 		this.simulator = simulator;
+		this.view = view;
 
-		plus.addActionListener(buttonListener);
-		minus.addActionListener(buttonListener);
-		reset.addActionListener(buttonListener);
+		
+		
 		pause.addActionListener(buttonListener);
 		up.addActionListener(buttonListener);
 		down.addActionListener(buttonListener);
@@ -61,25 +74,48 @@ public class OrbitalControlPanel extends JPanel{
 		speedDown.addActionListener(buttonListener);
 		speedUp.addActionListener(buttonListener);
 		
-		div1.add(plus);
-		div1.add(minus);
-		div1.add(reset);
+		// Zoom controls
+		plus.addActionListener(buttonListener);
+		minus.addActionListener(buttonListener);
+		zoomControlsPanel.setLayout(new BorderLayout());
+		zoomControlsPanel.add(plus, BorderLayout.CENTER);
+		zoomControlsPanel.add(minus, BorderLayout.SOUTH);
+		
+		
+		// Reset Button
+		reset.addActionListener(buttonListener);
+		resetPanel.add(reset);
 
-		div2.add(pause);
+		// Pause button
+		pausePanel.add(pause);
 
-		div3.setLayout(new BorderLayout());
-		div3.add(up, BorderLayout.NORTH);
-		div3.add(down, BorderLayout.CENTER);
-		div3.add(left, BorderLayout.WEST);
-		div3.add(right, BorderLayout.EAST);
+		// Pan controls
+		panControlsPanel.setLayout(new BorderLayout());
+		//up.setPreferredSize(buttonSize);
+		panControlsPanel.add(up, BorderLayout.NORTH);
+		panControlsPanel.add(down, BorderLayout.CENTER);
+		panControlsPanel.add(left, BorderLayout.WEST);
+		panControlsPanel.add(right, BorderLayout.EAST);
 
+		// Speed controls
 		speedControls.add(speedDown);
 		speedControls.add(speedUp);
+		
+		// Check boxes
+		showVelocityComponents.addItemListener(e -> velocityComponentsBoxStateChanged(e));
+		showTrails.addItemListener(e -> showTrailsBoxStateChanged(e));
+		showTrails.setSelected(true);
+		checkBoxPanel.add(showVelocityComponents);
+		checkBoxPanel.add(showTrails);
+		
 
-		add(div1);
-		add(div2);
-		add(div3);
+		// Add control panel elements together
+		add(zoomControlsPanel);
+		add(resetPanel);
+		add(pausePanel);
+		add(panControlsPanel);
 		add(speedControls);
+		add(checkBoxPanel);
 	}
 
 	
@@ -176,6 +212,24 @@ public class OrbitalControlPanel extends JPanel{
 		simulator.engine.decreaseUpdateCap();
 		//simulator.increaseUpdateCap();
 
+	}
+	
+	private void velocityComponentsBoxStateChanged(ItemEvent e){
+		int state = e.getStateChange();
+		//System.out.println("velocityComponentsBox state: " + state);
+		
+		if(state == 1)view.toggleDrawVelocityComponents(true);
+		if(state == 2)view.toggleDrawVelocityComponents(false);
+		
+	}
+	
+	private void showTrailsBoxStateChanged(ItemEvent e){
+		int state = e.getStateChange();
+		//System.out.println("velocityComponentsBox state: " + state);
+		
+		if(state == 1)view.setDrawTrails(true);
+		if(state == 2)view.setDrawTrails(false);
+		
 	}
 
 	

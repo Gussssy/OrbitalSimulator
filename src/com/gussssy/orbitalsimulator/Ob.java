@@ -1,12 +1,11 @@
 package com.gussssy.orbitalsimulator;
 
 import java.awt.Color;
-import java.io.Serializable;
 
 /**
 * Ob defines a single Object in space such as a planet, moon, star etc
 */
-public class Ob implements Serializable{
+public class Ob{
 
 	/**The name of the object.*/
 	public String name;	
@@ -14,22 +13,22 @@ public class Ob implements Serializable{
 	/**The Mass of the object in Earth Masses. A mass of 1 corresponds to 5.972x10^25 kg */
 	public double mass; 
 
-	// Gravitational force from the parent body in newtons
+	// Gravitational force from the parent body in Newtons
 	/**The gravitational force in Newtons, applied to this body by the last object it was compared with*/
 	public double gForce;
 	
 	
 	// MODEL COORDS
-	/**The x value of the objects loaction within the model space*/
+	/**The x value of the objects location within the model space*/
 	public double x;
-	/**The y value of the objects loaction within the model space*/		
+	/**The y value of the objects location within the model space*/		
 	public double y;
 
 	
 	//Display coords
-	/**The x coordinate of the objects loaction in the display space*/
+	/**The x coordinate of the objects location in the display space*/
 	public double dispX;
-	/**The y coordinate of the objects loaction in the display space*/
+	/**The y coordinate of the objects location in the display space*/
 	public double dispY;
 
 	//Velocity, given in km/s
@@ -37,6 +36,8 @@ public class Ob implements Serializable{
 	public double vx;
 	/**The y component of the objects velocity in km per second*/
 	public double vy;
+	/**The total velocity*/
+	public double v;
 	
 	
 	/**The colour the object will display*/
@@ -45,12 +46,10 @@ public class Ob implements Serializable{
 	/**The size of the object in the display*/
 	public double size;
 	
-	/** Serial Version ID. **/
-	private static final long serialVersionUID = 5136180108127531507L;
 	
 
 	/**
-	* Main constructor. Specefies all necessary values to make a functional object. 
+	* Main constructor. Specifies all necessary values to make a functional object. 
 	* 
 	* @param name: the name of the object
 	* @param mass: the mass of the object (in earth masses)
