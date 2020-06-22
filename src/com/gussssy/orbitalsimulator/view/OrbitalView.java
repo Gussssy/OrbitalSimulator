@@ -64,7 +64,7 @@ public class OrbitalView{
 		System.out.println("Initializing Frame with Width: "+frameWidth+", Height: "+frameHeight);
 		frame = new JFrame("Orbital Simulator");
 		frame.setSize(frameWidth,frameHeight); //This works because the frame is the highest level component
-		frame.setIconImage(new ImageIcon(getClass().getResource("/icon.png")).getImage());
+		//frame.setIconImage(new ImageIcon(getClass().getResource("/icon.png")).getImage());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
 
