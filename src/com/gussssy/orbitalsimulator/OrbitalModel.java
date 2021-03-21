@@ -3,6 +3,8 @@ package com.gussssy.orbitalsimulator;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import com.gussssy.orbitalsimulator.dataimport.OrbitalReciever;
+
 /**
 * Orbital Model. MVC: Model
 * 
@@ -13,7 +15,11 @@ public class OrbitalModel{
 
 	/**The objects in the simulation*/
 	private ArrayList<Ob> objects = new ArrayList<Ob>();
+	
+	// Whether or not the simulator will use simplfied or full gravity. 
+	private boolean fullGravity = true;
 
+	
 	// Model Dimensions
 	private static final int HEIGHT = 1200; 
 	private static final int WIDTH = 1200;
@@ -55,6 +61,9 @@ public class OrbitalModel{
 	private void initializeObjects(){
 
 		//Initialize the objects
+		
+		// load from database
+		OrbitalReciever.getAteroidsWithDiamterExceeding(100);
 
 		//Solar Syatem objects
 		Ob sun = new Ob("The Sun",330000, CENTRE,CENTRE, 0,0, new Color(255,255,0),75);
@@ -94,8 +103,27 @@ public class OrbitalModel{
 	*/
 	public void simulateDay(){
 		
+<<<<<<< Upstream, based on origin/master
 		updateVelocitiesFullGravity();
 		updatePositionsFullGravity();
+=======
+		
+		if(fullGravity){
+			
+			// simulate gravitaty between all objects
+			updateVelocitiesFullGravity();
+			updatePositionsFullGravity();
+			
+		} else{
+			
+			// simulate considering only gravity between the central body
+			updateVelocitiesFullGravity();
+			updatePositionsFullGravity();
+			
+		}
+		
+		// increment day count
+>>>>>>> effcc4d Add databse connectivity.
 		day++;
 	}
 
