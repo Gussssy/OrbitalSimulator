@@ -11,7 +11,7 @@ import com.gussssy.orbitalsimulator.view.OrbitalView;
 *	BELOW NOT FULLY IMPLEMENTED
 *	- Provide view and model components access to each other.
 *			-  View components can talk to other view components without going through OrbitalSimulator
-*			-  However the view must go through the controller to get to the model or engine
+*			-  However the view must go through the controller (this class) to get to the model or engine
 *	- facilitate user driven actions that require crossing between divisions of the program e.g view to engine to pause the simulation
 */
 public class OrbitalSimulator{
@@ -45,9 +45,8 @@ public class OrbitalSimulator{
 	
 	
 	/**
-	* Main method/Program entry point.
+	* Main method/Program entry point. Launches OrbitalSimulator. 
 	* 
-	* Initializes the Model and View then starts the run loop by calling run()
 	*/
 	public static void main(String[] args){
 
@@ -60,7 +59,7 @@ public class OrbitalSimulator{
 	
 	
 	/**
-	 * The sole OrbitalSimulator constructor
+	 * Constructs a new instance of OrbitalSimulator.
 	 * - initializes the model and view
 	 * - initializes the thread
 	 * - starts the run loop

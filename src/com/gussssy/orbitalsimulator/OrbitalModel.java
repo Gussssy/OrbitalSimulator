@@ -7,7 +7,7 @@ import java.util.ArrayList;
 * Orbital Model. MVC: Model
 * 
 * Creates and holds the data for the simulation. 
-* Requests data manipulations that are carried out by OrbitalMath, a static helper class.
+* Requests data manipulations that are carried out by OrbitalMath.
 */
 public class OrbitalModel{
 
@@ -94,8 +94,8 @@ public class OrbitalModel{
 	*/
 	public void simulateDay(){
 		
-		requestVelocityUpdateFullGravity();
-		requestPositionUpdateFullGravity();
+		updateVelocitiesFullGravity();
+		updatePositionsFullGravity();
 		day++;
 	}
 
@@ -106,7 +106,7 @@ public class OrbitalModel{
 	*
 	* Simplified Gravity: Gravitational effects only calculated between the centre objects and surronding child objects.  
 	*/
-	private void requestVelocityUpdateSimplifiedGravity(){
+	private void updateVelocitySimplfiedGravity(){
 
 		//update velocity cause by sun on objects
 		for(int x = 1; x < objects.size() ; x++ ){
@@ -122,7 +122,7 @@ public class OrbitalModel{
 	* 
 	* Simplified Gravity: Gravitational effects only calculated between the centre objects and surronding child objects. 
 	*/
-	private void requestPositionUpdateSimplifiedGravity(){
+	private void updatePositionsSimplfiedGravity(){
 		
 		//Update position of the obejcts excluding the central parent object
 		for(int x = 1; x < objects.size() ; x++ ){
@@ -138,7 +138,7 @@ public class OrbitalModel{
 	*
 	* Full Gravity: Gravitational interactions are calculated for all objects, between all other objects.
 	*/
-	private void requestVelocityUpdateFullGravity(){
+	private void updateVelocitiesFullGravity(){
 		
 		//Outer Loop: loops through objects. each iteration calculates the force the current/parent object
 		//	exerts on all other bodies EXCLUDING ITSELF
@@ -168,9 +168,9 @@ public class OrbitalModel{
 	*
 	* Full Gravity: Gravitational interactions are calculated for all objects, between all other objects.
 	*/
-	private void requestPositionUpdateFullGravity(){
+	private void updatePositionsFullGravity(){
 		
-		//update position of the obejcts
+		//update position of all the obejcts
 		for(int x = 0; x < objects.size() ; x++ ){
 			OrbitalMath.updatePositions(objects.get(x));
 		}

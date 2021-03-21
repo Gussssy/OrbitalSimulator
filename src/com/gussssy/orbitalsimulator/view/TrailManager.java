@@ -9,28 +9,35 @@ import com.gussssy.orbitalsimulator.OrbitalSimulator;
 
 /**
  * Responsible for creating and managing trails that show the previous location of objects in the simulation. 
- * Trails are made of a series of TrailNodes which are visible in the display as a white circle/square that becomes increasingly more transparent untill it is deleted.  
+ * 
+ * Trails are made of a series of TrailNodes which are visible in the display as a white circle/square that becomes increasingly more transparent over its lifetime untill removed.  
  **/
 public class TrailManager {
 	
 	private OrbitalSimulator simulator;
 	
 	public ArrayList<TrailNode> nodes = new ArrayList<TrailNode>();
+	
+	// nodes that have reach the end of thier life time and will be removved next update.
 	private ArrayList<TrailNode> deadNodes = new ArrayList<TrailNode>();
+	
+	// an array containing each color a trail node will display untill being removed
 	private Color[] nodeColors;
-	int numberOfAlphaLevels = 200;
+	
+	// how many times the alpha level of a trail node will be lowered before becoming fully trasparent and then removed. 
+	private int numberOfAlphaLevels = 200;
 	
 	
 	// How often trails are updated. 1 = trails updated every update, 10 = trails update every 10 updates
-	// Lowest safe value is 3 at the moment, any lower and we get concurrent modification exception on the arraylist
-	int trailUpdateFrequency = 3;
-	int updatesSinceLastTrailUpdate = 0;
+	private int trailUpdateFrequency = 3;
+	
+	// How many updates have occured since the trail nodes where updated
+	private int updatesSinceLastTrailUpdate = 0;
 	
 	
 	
 	/**
-	 * The only constructor for TrailManager 
-	 * 
+	 * Constructs a new TrailManager Object
 	 **/
 	public TrailManager(OrbitalSimulator simulator){
 		
@@ -54,6 +61,8 @@ public class TrailManager {
 		}
 	}
 	
+	
+	
 	/**
 	 * Updates the trails if enough updates have past since trails were last updated.
 	 **/
@@ -72,6 +81,8 @@ public class TrailManager {
 	
 	/**
 	 * Makes a trail node at the current position of each object in the simulation
+	 * 
+	 * @param objects The objects in the simulation. A trail node will be made for each object in this list. 
 	 **/
 	public void makeNodes(ArrayList<Ob> objects){
 		
@@ -96,13 +107,16 @@ public class TrailManager {
 			if(node.lifeTime == 0)deadNodes.add(node);
 		}
 		
+		// Remove any nodes that are now dead
 		for(TrailNode node : deadNodes){
 			nodes.remove(node);
 		}
+		
+		// clear the dead nodes list for next time. 
 		deadNodes.clear();
 		
 		
-		
+		// Decrement remaining lifetime for current nodes
 		for(TrailNode node : nodes){
 			
 			node.lifeTime--;

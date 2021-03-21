@@ -3,7 +3,7 @@ package com.gussssy.orbitalsimulator;
 import java.awt.Color;
 
 /**
-* Ob defines a single Object in space such as a planet, moon, star etc
+* Ob defines a single astronoimcal object in space such as a planet, moon, asteroid or star.
 */
 public class Ob{
 
@@ -49,7 +49,9 @@ public class Ob{
 	
 
 	/**
-	* Main constructor. Specifies all necessary values to make a functional object. 
+	* Ob Primary Constructor. Constructs a new Ob with every field set by parameters.
+	* 
+	* Specifies all necessary values to make a functional object. 
 	* 
 	* @param name: the name of the object
 	* @param mass: the mass of the object (in earth masses)
@@ -75,7 +77,7 @@ public class Ob{
 	
 
 	/**
-	* Simplified constructor that sets necesary unspecified variables to default values
+	* Secondary Ob constructor that sets necesary variables not given as parameters to default values
 	* 
 	* @param name: the name of the object
 	* @param mass: the mass of the object (in earth masses)
