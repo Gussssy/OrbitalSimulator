@@ -18,7 +18,7 @@ public class TrailManager {
 	public ArrayList<TrailNode> nodes = new ArrayList<TrailNode>();
 	private ArrayList<TrailNode> deadNodes = new ArrayList<TrailNode>();
 	private Color[] nodeColors;
-	int numberOfAlphaLevels = 50;
+	int numberOfAlphaLevels = 200;
 	
 	
 	// How often trails are updated. 1 = trails updated every update, 10 = trails update every 10 updates

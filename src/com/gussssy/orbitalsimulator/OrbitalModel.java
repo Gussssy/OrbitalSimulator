@@ -26,7 +26,13 @@ public class OrbitalModel{
 	private static final double D_JUPITER_SUN = 778.5;
 	private static final double D_VENUS_SUN = 108.2;
 	private static final double D_MERCURY_SUN = 57.91;
-	//private static final double D_SATURN_SUN = 1400;
+	private static final double D_SATURN_SUN = 1400;
+	private static final double D_NEPTUNE_SUN = 1;
+	private static final double D_URANUS_SUN = 1;
+	private static final double D_MOON_EARTH = 0.384400;
+	
+	// Velocity values (km/s)
+	private final double V_MOON_EARTH = 1.022;
 	
 	// The day the simulations has reached for the model instance
 	private int day = 0;
@@ -57,8 +63,8 @@ public class OrbitalModel{
 		Ob jupiter = new Ob("Jupiter", 318, CENTRE, CENTRE-D_JUPITER_SUN, 13.07,0, new Color(153,102,0),80);
 		Ob venus = new Ob("Venus", 0.815, CENTRE, CENTRE-D_VENUS_SUN, 35.02,0, new Color(255,255,204),24);
 		Ob mercury = new Ob("Mercury", 0.055, CENTRE, CENTRE-D_MERCURY_SUN, 47.362,0, new Color(212,209,195),10);
-		//Ob saturn = new Ob("Saturn", 95.159,CENTRE, CENTRE-D_SATURN_SUN	)
-		
+		Ob saturn = new Ob("Saturn", 95.159,CENTRE, CENTRE-D_SATURN_SUN, 9.68, 0, new Color(110,100,120), 70);
+		Ob moon = new Ob("Moon", 0.012, CENTRE, CENTRE-D_EARTH_SUN-D_MOON_EARTH, 29.78 + V_MOON_EARTH, 0, new Color(100,100,100), 3);
 
 		// Additional Objects to create interesting interactions 
 		Ob mars2 = new Ob("Big Mars", 250, CENTRE-D_MARS_SUN, CENTRE-D_MARS_SUN, -24, 0, new Color(200, 50, 50),35);
@@ -74,6 +80,8 @@ public class OrbitalModel{
 		objects.add(jupiter);
 		objects.add(venus);
 		objects.add(mercury);
+		objects.add(saturn);
+		objects.add(moon);
 		//objects.add(mars2);
 		//objects.add(intruder);
 
