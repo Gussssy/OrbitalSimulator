@@ -14,6 +14,9 @@ import com.gussssy.orbitalsimulator.OrbitalSimulator;
  **/
 public class TrailManager {
 	
+	// controls printing of debug infomation to console
+	private boolean print = false;
+	
 	private OrbitalSimulator simulator;
 	
 	public ArrayList<TrailNode> nodes = new ArrayList<TrailNode>();
@@ -57,7 +60,7 @@ public class TrailManager {
 		for(int i = 0; i < numberOfAlphaLevels; i++){
 			alpha = alphaInitialValue - alphaDecrement * i;
 			nodeColors[i] = new Color(255, 255, 255, (int)alpha);
-			System.out.println("Color Alpha: " + nodeColors[i].getAlpha());
+			if(print)System.out.println("Color Alpha: " + nodeColors[i].getAlpha());
 		}
 	}
 	

@@ -41,7 +41,7 @@ public class OrbitalEngine implements Runnable{
 	/**
 	 * When true, fps will be printed to the console every second
 	 */
-	private boolean printFPS = true;
+	private boolean printFPS = false;
 	
 	/**
 	When true, the simulation will not execute. NOTE: why does this still work when static? Because static can be used in non static, but no vice versa
@@ -56,14 +56,14 @@ public class OrbitalEngine implements Runnable{
 
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	//						W O R K   I N   P R O G R E S S 									//
+	//						W O R K   I N   P R O G R E S S 									 //
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	// All variables below are new and being tested. 24-5-20
 	double[] updateCaps = {1.0/15.0, 1.0/30.0, 1.0/60.0, 1.0/120.0, 1.0/240.0};
 	int updateCapIndex = 2;
 	double updateCap = 1.0/60.0;
 	double frameCap = 1.0/60.0;
-	boolean printRenderTime = true;
+	boolean printRenderTime = false;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 

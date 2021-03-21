@@ -3,16 +3,9 @@ package com.gussssy.orbitalsimulator.view;
 import java.awt.*;
 import javax.swing.*;
 import java.util.ArrayList;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.event.ChangeListener;
-
 import com.gussssy.component.DoubleJSpinner;
 import com.gussssy.orbitalsimulator.Ob;
 import com.gussssy.orbitalsimulator.OrbitalSimulator;
-
-import javax.swing.event.ChangeEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 
 /**
@@ -20,13 +13,14 @@ Used to create new objects and modify existing objects at runtime.
 */
 public class PlanetBuilderPanel extends JPanel{
 
-	/**The objects*/
+	// The objects
 	private ArrayList<Ob> objects;
 	
+	// ...
 	private OrbitalSimulator simulator;
 	
 	/**A JCombobox that will contain the name each object*/
-	private JComboBox planetSelect;
+	private JComboBox<String> planetSelect;
 
 	/** A JPanel that displays an image of the selected object  */
 	private PlanetViewCell cell;

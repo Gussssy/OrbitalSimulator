@@ -8,24 +8,45 @@ import com.gussssy.orbitalsimulator.dataimport.OrbitalReciever;
 /**
 * Orbital Model. MVC: Model
 * 
-* Creates and holds the data for the simulation. 
-* Requests data manipulations that are carried out by OrbitalMath.
+* Initializes and holds the astromical objects for the simulation. 
+* Simulates a day in the simulation by calling methods top update the velocities and positions of the objects ion the simulation.
 */
 public class OrbitalModel{
 
-	/**The objects in the simulation*/
+	// The objects in the simulation
 	private ArrayList<Ob> objects = new ArrayList<Ob>();
 	
+<<<<<<< Upstream, based on origin/master
 	// Whether or not the simulator will use simplfied or full gravity. 
 	private boolean fullGravity = true;
+=======
+	// The number of days that have been simulated
+	private int day = 0;
+>>>>>>> 3f63dd5 Add ateroids obtained from the database into the simulation.
 
 	
+<<<<<<< Upstream, based on origin/master
 	// Model Dimensions
+=======
+	// Whether or not the simulator will use simplfied or full gravity. 
+	// - fullGravity = true: gravitational forces between all objects considered
+	// - fullGravity = false: only gravitational force from the central body (the sun) is considered
+	private boolean fullGravity = false;
+
+	
+	// Model Dimensions (in million km)
+>>>>>>> 3f63dd5 Add ateroids obtained from the database into the simulation.
 	private static final int HEIGHT = 1200; 
 	private static final int WIDTH = 1200;
 	private static final double CENTRE = HEIGHT/2;
+	
+	// The scale of the model. How many km per pixel. Set to 1 million km per pixel 
+	private final int MODEL_SCALE = 1000000;
 
-	//Physical distance vales, in mKm (million kilometres)
+
+	
+	
+	// Physical distance vales, in million km
 	private static final double D_EARTH_SUN = 149.6;
 	private static final double D_MARS_SUN = 227.9;
 	private static final double ISO = 105.783174465;
@@ -40,17 +61,13 @@ public class OrbitalModel{
 	// Velocity values (km/s)
 	private final double V_MOON_EARTH = 1.022;
 	
-	// The day the simulations has reached for the model instance
-	private int day = 0;
-
 	
-	/** The scale of the model. Set to 1 million km per pixel*/
-	private final int MODEL_SCALE = 1000000;
-
+	
+	
 	
 
 	/**
-	* Constructor. Initilialies the data for the simulation. 
+	* Creates a new OrbitalModel object.
 	*/
 	public OrbitalModel(){
 		
@@ -58,13 +75,47 @@ public class OrbitalModel{
 		initializeObjects();
 	}
 
+	
+	
+	
+	
+	
+	/**
+	 * Initializes the objects to be simulated.
+	 * 
+	 * This includes the major solar system bodies and asteroids loaded from a database.
+	 */
 	private void initializeObjects(){
+		
+		// add solar system bodies to the simulation objects list
+		loadSolarSystem();
+		
+		
+		// load from database all asteroids exceeding a specified diameter 
+		ArrayList<Ob> asteroids = OrbitalReciever.getAteroidsWithDiamterExceeding(150);
+		
+		// add loaded asteroids to the objects list
+		for(Ob asteroid : asteroids){
+			objects.add(asteroid);
+		}
 
+<<<<<<< Upstream, based on origin/master
 		//Initialize the objects
 		
 		// load from database
 		OrbitalReciever.getAteroidsWithDiamterExceeding(100);
+=======
+		
+>>>>>>> 3f63dd5 Add ateroids obtained from the database into the simulation.
 
+	}
+	
+	
+	/**
+	 * Populates the simulation with the major solar system bodies, excluding uranus, neptune and pluto.
+	 */
+	private void loadSolarSystem(){
+		
 		//Solar Syatem objects
 		Ob sun = new Ob("The Sun",330000, CENTRE,CENTRE, 0,0, new Color(255,255,0),75);
 		Ob earthQ1_2 = new Ob("Earth",1,CENTRE,CENTRE-D_EARTH_SUN, 29.78,0,  new Color(0,100,255),25);
@@ -75,14 +126,6 @@ public class OrbitalModel{
 		Ob saturn = new Ob("Saturn", 95.159,CENTRE, CENTRE-D_SATURN_SUN, 9.68, 0, new Color(110,100,120), 70);
 		Ob moon = new Ob("Moon", 0.012, CENTRE, CENTRE-D_EARTH_SUN-D_MOON_EARTH, 29.78 + V_MOON_EARTH, 0, new Color(100,100,100), 3);
 
-		// Additional Objects to create interesting interactions 
-		Ob mars2 = new Ob("Big Mars", 250, CENTRE-D_MARS_SUN, CENTRE-D_MARS_SUN, -24, 0, new Color(200, 50, 50),35);
-		Ob intruder = new Ob("intruder", 10, CENTRE-D_JUPITER_SUN,CENTRE);
-		intruder.size = 50;
-		intruder.vx = 15;
-		intruder.vy = 3;
-
-
 		objects.add(sun);
 		objects.add(earthQ1_2);
 		objects.add(mars);
@@ -91,18 +134,18 @@ public class OrbitalModel{
 		objects.add(mercury);
 		objects.add(saturn);
 		objects.add(moon);
-		//objects.add(mars2);
-		//objects.add(intruder);
-
 
 	}
 
+	
+	
 
 	/**
 	* Execute simulation of a day 
 	*/
 	public void simulateDay(){
 		
+<<<<<<< Upstream, based on origin/master
 <<<<<<< Upstream, based on origin/master
 		updateVelocitiesFullGravity();
 		updatePositionsFullGravity();
@@ -124,6 +167,24 @@ public class OrbitalModel{
 		
 		// increment day count
 >>>>>>> effcc4d Add databse connectivity.
+=======
+
+		if(fullGravity){
+			
+			// simulate gravitaty between all objects
+			updateVelocitiesFullGravity();
+			updatePositionsFullGravity();
+			
+		} else{
+			
+			// simulate considering only gravity between the central body
+			updateVelocitiesFullGravity();
+			updatePositionsFullGravity();
+			
+		}
+		
+		// increment day count
+>>>>>>> 3f63dd5 Add ateroids obtained from the database into the simulation.
 		day++;
 	}
 
