@@ -3,6 +3,9 @@ package com.gussssy.orbitalsimulator.dataimport;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.gussssy.databaseconnectivity.ImportedRow;
+import com.gussssy.databaseconnectivity.ImportedRowFactory;
+
 /**
  * Uses the Factory Method pattern to create objects to holding values describing an asteroid with data obtained from the AstronomicalObjects database.
  */

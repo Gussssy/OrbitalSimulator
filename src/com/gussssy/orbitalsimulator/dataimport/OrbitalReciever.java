@@ -1,11 +1,11 @@
 package com.gussssy.orbitalsimulator.dataimport;
 
 import java.awt.Color;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
+import com.gussssy.databaseconnectivity.DatabaseConnection;
+import com.gussssy.databaseconnectivity.ImportedRow;
 import com.gussssy.orbitalsimulator.Ob;
 
 /**

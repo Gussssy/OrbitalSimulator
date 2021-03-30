@@ -1,4 +1,4 @@
-package com.gussssy.orbitalsimulator.dataimport;
+package com.gussssy.databaseconnectivity;
 
 /**
  * Interface... an object that that was created extracting a row from a database 

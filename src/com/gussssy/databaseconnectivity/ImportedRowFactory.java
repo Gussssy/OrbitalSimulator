@@ -1,4 +1,4 @@
-package com.gussssy.orbitalsimulator.dataimport;
+package com.gussssy.databaseconnectivity;
 
 import java.sql.ResultSet;
 

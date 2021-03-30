@@ -3,6 +3,8 @@ package com.gussssy.orbitalsimulator.dataimport;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.gussssy.databaseconnectivity.ImportedRow;
+
 /**
  * Implmentation of ImportedRow. Holds data from a row from the AstronomicalObjects database representing a single asteroid. 
  */

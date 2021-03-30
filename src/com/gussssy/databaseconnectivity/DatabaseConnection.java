@@ -1,4 +1,4 @@
-package com.gussssy.orbitalsimulator.dataimport;
+package com.gussssy.databaseconnectivity;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,16 +8,26 @@ import java.sql.Statement;
 
 import java.util.ArrayList;
 
+/**
+ * Used to extract data from a database and package this data into RowImport objects. 
+ */
 public class DatabaseConnection {
 
+	
+	// Variables used to access a database
+	private String url;
+	private String username;
+	private String password;
 
-	String url;
-	String username;
-	String password;
 
 
-
-
+	/**
+	 * Creates a new DatabaseConnection object.
+	 * 
+	 *  @param url of the database
+	 *  @param username
+	 *  @param password
+	 */
 	public DatabaseConnection(String url, String username, String password){
 
 		this.url = url;
@@ -64,10 +74,11 @@ public class DatabaseConnection {
 	/**
 	 * Executes a query and creates an ImportedRow object for each row returned from the query.
 	 * 
+	 * Uses the Factory Method Pattern so the returned object type is dependent on the type of ImportedRowFactory used. 
+	 * 
 	 * @param query The query to be executed
 	 * @param factory Facotry object that will control the kind of object created for each row.
 	 * @return results array list containing the imported row objects created by the factory
-	 * 
 	 */
 	public ArrayList<ImportedRow> queryDatabase(String query, ImportedRowFactory factory){
 
@@ -94,21 +105,12 @@ public class DatabaseConnection {
 					
 					count++;
 					
-					System.out.println("Creating a new ImportedRowObject. Count: " + count);
+					// Use the factory to create an ImportedRow object from the data in the current row. 
+					//  - exactly what values are extracted depends on the type of factory object passed in
 					results.add(factory.createImportedRow(resultSet));
+					System.out.println("Created a new ImportedRowObject. Count: " + count);
 					
 				}
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
 				
 				
 				
@@ -118,8 +120,6 @@ public class DatabaseConnection {
 
 				
 				
-
-
 
 			}catch(SQLException e){
 				
