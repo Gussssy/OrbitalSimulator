@@ -16,18 +16,11 @@ public class OrbitalModel{
 	// The objects in the simulation
 	private ArrayList<Ob> objects = new ArrayList<Ob>();
 	
-<<<<<<< Upstream, based on origin/master
-	// Whether or not the simulator will use simplfied or full gravity. 
-	private boolean fullGravity = true;
-=======
 	// The number of days that have been simulated
 	private int day = 0;
->>>>>>> 3f63dd5 Add ateroids obtained from the database into the simulation.
 
-	
-<<<<<<< Upstream, based on origin/master
 	// Model Dimensions
-=======
+
 	// Whether or not the simulator will use simplfied or full gravity. 
 	// - fullGravity = true: gravitational forces between all objects considered
 	// - fullGravity = false: only gravitational force from the central body (the sun) is considered
@@ -35,7 +28,6 @@ public class OrbitalModel{
 
 	
 	// Model Dimensions (in million km)
->>>>>>> 3f63dd5 Add ateroids obtained from the database into the simulation.
 	private static final int HEIGHT = 1200; 
 	private static final int WIDTH = 1200;
 	private static final double CENTRE = HEIGHT/2;
@@ -44,8 +36,6 @@ public class OrbitalModel{
 	private final int MODEL_SCALE = 1000000;
 
 
-	
-	
 	// Physical distance vales, in million km
 	private static final double D_EARTH_SUN = 149.6;
 	private static final double D_MARS_SUN = 227.9;
@@ -99,14 +89,14 @@ public class OrbitalModel{
 			objects.add(asteroid);
 		}
 
-<<<<<<< Upstream, based on origin/master
+
 		//Initialize the objects
 		
 		// load from database
 		OrbitalReciever.getAteroidsWithDiamterExceeding(100);
-=======
+
 		
->>>>>>> 3f63dd5 Add ateroids obtained from the database into the simulation.
+
 
 	}
 	
@@ -145,11 +135,9 @@ public class OrbitalModel{
 	*/
 	public void simulateDay(){
 		
-<<<<<<< Upstream, based on origin/master
-<<<<<<< Upstream, based on origin/master
 		updateVelocitiesFullGravity();
 		updatePositionsFullGravity();
-=======
+
 		
 		if(fullGravity){
 			
@@ -166,8 +154,7 @@ public class OrbitalModel{
 		}
 		
 		// increment day count
->>>>>>> effcc4d Add databse connectivity.
-=======
+
 
 		if(fullGravity){
 			
@@ -184,7 +171,6 @@ public class OrbitalModel{
 		}
 		
 		// increment day count
->>>>>>> 3f63dd5 Add ateroids obtained from the database into the simulation.
 		day++;
 	}
 
